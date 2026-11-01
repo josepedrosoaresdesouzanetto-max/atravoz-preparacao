@@ -1,0 +1,406 @@
+@import url("./tokens.css");
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
+button,
+a,
+input,
+textarea,
+select,
+summary {
+	touch-action: manipulation;
+}
+button {
+	min-height: 48px;
+	padding: 12px 18px;
+	border: 1px solid var(--line);
+	border-radius: 9px;
+	background: white;
+	color: var(--ink);
+	cursor: pointer;
+	font-weight: 700;
+}
+button:hover {
+	border-color: var(--teal);
+}
+button:disabled {
+	cursor: wait;
+	opacity: 0.65;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+select:focus-visible {
+	outline: 3px solid #b34c15;
+	outline-offset: 3px;
+}
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #7e908a;
+	border-radius: 7px;
+	background: white;
+	color: var(--ink);
+}
+textarea {
+	resize: vertical;
+}
+label {
+	display: block;
+	font-weight: 700;
+	margin: 16px 0 6px;
+}
+label small {
+	font-weight: 400;
+}
+a {
+	color: #155c56;
+}
+h1,
+h2,
+h3,
+p {
+	margin-top: 0;
+}
+h1 {
+	font-size: clamp(2rem, 5vw, 3rem);
+	line-height: 1.12;
+	letter-spacing: -0.04em;
+}
+h2 {
+	font-size: 1.3rem;
+	letter-spacing: -0.02em;
+}
+h3 {
+	font-size: 1.05rem;
+}
+small,
+.muted {
+	color: var(--muted);
+}
+small {
+	font-size: 0.85rem;
+}
+.shell {
+	max-width: 840px;
+	margin: auto;
+	padding: 26px 24px 60px;
+}
+.wide {
+	max-width: 1250px;
+}
+.masthead {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	padding-bottom: 22px;
+	border-bottom: 1px solid var(--line);
+	margin-bottom: 28px;
+}
+.brand {
+	font-weight: 900;
+	letter-spacing: 0.16em;
+	font-size: 1.15rem;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+.brandmark {
+	display: grid;
+	place-items: center;
+	background: var(--teal);
+	color: white;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	font-size: 22px;
+	letter-spacing: 0;
+}
+.eyebrow {
+	font-size: 0.72rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	color: var(--muted);
+	margin-bottom: 14px;
+}
+.pill {
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 0.75rem;
+	border-radius: 20px;
+	background: #e8eee8;
+	color: #294f3f;
+	font-weight: 700;
+}
+.notice {
+	padding: 14px 18px;
+	border-left: 4px solid #af551d;
+	background: #fff1de;
+	font-size: 0.9rem;
+	margin: 20px 0;
+}
+.notice p:last-child {
+	margin-bottom: 0;
+}
+.actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin: 24px 0 18px;
+}
+.primary {
+	background: var(--teal);
+	color: white;
+	border-color: var(--teal);
+}
+.urgent {
+	background: #aa3e25;
+	color: white;
+	border-color: #aa3e25;
+}
+.big-action {
+	text-align: left;
+	min-height: 110px;
+	padding: 20px;
+	font-size: 1.05rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 10px;
+}
+.big-action small {
+	font-size: 0.8rem;
+	color: inherit;
+	font-weight: 400;
+}
+.card {
+	background: white;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	padding: 22px;
+	margin: 16px 0;
+}
+.toolbar {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+}
+.toolbar .group {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.quiet {
+	background: transparent;
+}
+.status {
+	padding: 12px 16px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: #eef5ef;
+	font-weight: 700;
+	margin: 16px 0;
+}
+.error {
+	background: #fff0e9;
+	color: #8b2d1c;
+	border-color: #d7a091;
+}
+.check {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 400;
+}
+.check input {
+	width: 20px;
+	height: 20px;
+}
+.record {
+	border-top: 1px solid var(--line);
+	padding: 20px 0;
+}
+.record:last-child {
+	padding-bottom: 0;
+}
+.record p {
+	margin: 10px 0;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.id {
+	font-family: monospace;
+	font-size: 0.78rem;
+	overflow-wrap: anywhere;
+}
+.record summary,
+details > summary {
+	cursor: pointer;
+	font-weight: 700;
+	padding: 10px 0;
+}
+.grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 18px;
+}
+.list-clean {
+	padding: 0;
+	list-style: none;
+}
+.list-clean li {
+	margin: 7px 0;
+}
+.empty {
+	padding: 30px 0;
+	text-align: center;
+	color: var(--muted);
+}
+.footer {
+	border-top: 1px solid var(--line);
+	padding-top: 22px;
+	margin-top: 28px;
+	font-size: 0.85rem;
+	color: var(--muted);
+}
+audio {
+	width: 100%;
+	margin: 12px 0;
+}
+.preview {
+	max-width: 100%;
+	max-height: 220px;
+	object-fit: contain;
+	border-radius: 8px;
+}
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+}
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: minmax(280px, 0.9fr) minmax(350px, 1.3fr);
+	gap: 24px;
+	align-items: start;
+}
+.incident-button {
+	display: block;
+	width: 100%;
+	text-align: left;
+	border-radius: 0;
+	border-width: 0 0 1px;
+	padding: 20px 4px;
+	font-weight: 400;
+}
+.incident-button.selected {
+	border-left: 4px solid var(--teal);
+	padding-left: 14px;
+	background: #f0f5ef;
+}
+.incident-button strong {
+	display: block;
+	margin: 8px 0;
+}
+.detail-row {
+	border-bottom: 1px solid var(--line);
+	padding: 14px 0;
+}
+.detail-row:last-child {
+	border: 0;
+}
+.detail-row p:last-child {
+	margin: 0;
+}
+.count {
+	font-size: 2.6rem;
+	line-height: 1;
+	font-weight: 700;
+	letter-spacing: -0.05em;
+}
+.stats {
+	display: flex;
+	gap: 40px;
+	margin: 30px 0;
+}
+.stats p {
+	margin: 8px 0 0;
+	font-size: 0.8rem;
+	color: var(--muted);
+}
+.preserve {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.divider {
+	border: 0;
+	border-top: 1px solid var(--line);
+	margin: 22px 0;
+}
+.compact-label {
+	margin-top: 0;
+}
+.badge-row {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.login {
+	max-width: 500px;
+	margin: 40px auto;
+}
+.success {
+	color: #185b3f;
+}
+@media (max-width: 700px) {
+	.shell {
+		padding: 18px 16px 40px;
+	}
+	.actions,
+	.grid,
+	.dashboard-grid {
+		grid-template-columns: 1fr;
+	}
+	.big-action {
+		min-height: 90px;
+	}
+	.card {
+		padding: 18px;
+	}
+	.masthead {
+		gap: 12px;
+	}
+	.masthead a {
+		font-size: 0.8rem;
+	}
+	.stats {
+		gap: 24px;
+	}
+	.count {
+		font-size: 2rem;
+	}
+}

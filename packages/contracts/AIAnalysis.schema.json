@@ -1,0 +1,226 @@
+{
+  "$defs": {
+    "DuplicateSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "incident_id": {
+          "format": "uuid",
+          "title": "Incident Id",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "incident_id",
+        "score",
+        "reasons"
+      ],
+      "title": "DuplicateSuggestion",
+      "type": "object"
+    },
+    "ExtractedInformation": {
+      "additionalProperties": false,
+      "properties": {
+        "people_mentioned": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "People Mentioned"
+        },
+        "people_evidence": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "People Evidence"
+        },
+        "conditions": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "category_evidence": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Category Evidence"
+        }
+      },
+      "title": "ExtractedInformation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_id": {
+      "format": "uuid",
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "incident_id": {
+      "format": "uuid",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "model_name": {
+      "title": "Model Name",
+      "type": "string"
+    },
+    "processed_at": {
+      "format": "date-time",
+      "title": "Processed At",
+      "type": "string"
+    },
+    "original_text": {
+      "title": "Original Text",
+      "type": "string"
+    },
+    "normalized_text": {
+      "title": "Normalized Text",
+      "type": "string"
+    },
+    "suggested_category": {
+      "enum": [
+        "pessoas_ilhadas",
+        "alagamento",
+        "deslizamento",
+        "incendio",
+        "indeterminado"
+      ],
+      "title": "Suggested Category",
+      "type": "string"
+    },
+    "extracted_information": {
+      "$ref": "#/$defs/ExtractedInformation"
+    },
+    "missing_information": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Information",
+      "type": "array"
+    },
+    "possible_duplicates": {
+      "items": {
+        "$ref": "#/$defs/DuplicateSuggestion"
+      },
+      "title": "Possible Duplicates",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "human_review_required": {
+      "const": true,
+      "default": true,
+      "title": "Human Review Required",
+      "type": "boolean"
+    },
+    "information_confirmed": {
+      "const": false,
+      "default": false,
+      "title": "Information Confirmed",
+      "type": "boolean"
+    },
+    "processing_status": {
+      "enum": [
+        "model",
+        "rules",
+        "fallback"
+      ],
+      "title": "Processing Status",
+      "type": "string"
+    },
+    "raw_output": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Output"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Code"
+    },
+    "duration_ms": {
+      "title": "Duration Ms",
+      "type": "number"
+    }
+  },
+  "required": [
+    "incident_id",
+    "model_name",
+    "original_text",
+    "normalized_text",
+    "suggested_category",
+    "extracted_information",
+    "missing_information",
+    "limitations",
+    "confidence",
+    "processing_status",
+    "duration_ms"
+  ],
+  "title": "AIAnalysis",
+  "type": "object"
+}

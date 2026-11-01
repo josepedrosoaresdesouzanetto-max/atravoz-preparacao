@@ -1,0 +1,7 @@
+[
+  {"name":"minimal","valid":true,"payload":{"schema_version":1,"incident_id":"5946b68d-73a6-4e3c-9021-59a3ed098038","created_at":"2026-11-01T00:00:00Z","updated_at":"2026-11-01T00:00:00Z","record_type":"help","description":"","synthetic":true}},
+  {"name":"manual-location","valid":true,"payload":{"schema_version":1,"incident_id":"5946b68d-73a6-4e3c-9021-59a3ed098038","created_at":"2026-11-01T00:00:00Z","updated_at":"2026-11-01T00:00:00Z","record_type":"witness","description":"Relato fictício 🌧","location":{"source":"manual","reference":"Rua fictícia","timestamp":"2026-11-01T00:00:00Z"},"synthetic":true}},
+  {"name":"wrong-version","valid":false,"payload":{"schema_version":2,"incident_id":"5946b68d-73a6-4e3c-9021-59a3ed098038","created_at":"2026-11-01T00:00:00Z","updated_at":"2026-11-01T00:00:00Z","record_type":"help","description":"","synthetic":true}},
+  {"name":"synthetic-must-be-boolean","valid":false,"payload":{"schema_version":1,"incident_id":"5946b68d-73a6-4e3c-9021-59a3ed098038","created_at":"2026-11-01T00:00:00Z","updated_at":"2026-11-01T00:00:00Z","record_type":"help","description":"","synthetic":1}},
+  {"name":"gps-missing-longitude","valid":false,"payload":{"schema_version":1,"incident_id":"5946b68d-73a6-4e3c-9021-59a3ed098038","created_at":"2026-11-01T00:00:00Z","updated_at":"2026-11-01T00:00:00Z","record_type":"help","description":"","location":{"source":"gps","latitude":-8,"timestamp":"2026-11-01T00:00:00Z"},"synthetic":true}}
+]

@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "format": "uuid",
+      "title": "Receipt Id",
+      "type": "string"
+    },
+    "incident_id": {
+      "format": "uuid",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "status": {
+      "const": "RECEBIDO_SERVIDOR",
+      "default": "RECEBIDO_SERVIDOR",
+      "title": "Status",
+      "type": "string"
+    },
+    "server_received_at": {
+      "format": "date-time",
+      "title": "Server Received At",
+      "type": "string"
+    },
+    "code": {
+      "const": "PERSISTED",
+      "default": "PERSISTED",
+      "title": "Code",
+      "type": "string"
+    },
+    "message": {
+      "default": "Recebido pelo protótipo. Isso não confirma atendimento.",
+      "title": "Message",
+      "type": "string"
+    },
+    "attachment_ids_received": {
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "title": "Attachment Ids Received",
+      "type": "array"
+    }
+  },
+  "required": [
+    "incident_id"
+  ],
+  "title": "ServerReceipt",
+  "type": "object"
+}

@@ -1,0 +1,217 @@
+{
+  "$defs": {
+    "AttachmentManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "attachment_id": {
+          "format": "uuid",
+          "title": "Attachment Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "audio",
+            "photo"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "mime_type": {
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "audio/webm",
+            "audio/ogg",
+            "audio/mp4",
+            "audio/wav"
+          ],
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "byte_size": {
+          "maximum": 4194304,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attachment_id",
+        "kind",
+        "mime_type",
+        "byte_size",
+        "sha256"
+      ],
+      "title": "AttachmentManifest",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "gps",
+            "last_known",
+            "manual"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "latitude": {
+          "anyOf": [
+            {
+              "maximum": 90,
+              "minimum": -90,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latitude"
+        },
+        "longitude": {
+          "anyOf": [
+            {
+              "maximum": 180,
+              "minimum": -180,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Longitude"
+        },
+        "reference": {
+          "default": "",
+          "maxLength": 240,
+          "title": "Reference",
+          "type": "string"
+        },
+        "accuracy_m": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accuracy M"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "confirmed": {
+          "default": false,
+          "title": "Confirmed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source",
+        "timestamp"
+      ],
+      "title": "Location",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "incident_id": {
+      "format": "uuid",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "record_type": {
+      "enum": [
+        "help",
+        "witness"
+      ],
+      "title": "Record Type",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Description",
+      "type": "string"
+    },
+    "location": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Location"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "origin_device_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Origin Device Id"
+    },
+    "attachments": {
+      "items": {
+        "$ref": "#/$defs/AttachmentManifest"
+      },
+      "maxItems": 2,
+      "title": "Attachments",
+      "type": "array"
+    },
+    "synthetic": {
+      "const": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "incident_id",
+    "created_at",
+    "updated_at",
+    "record_type",
+    "synthetic"
+  ],
+  "title": "Incident",
+  "type": "object"
+}

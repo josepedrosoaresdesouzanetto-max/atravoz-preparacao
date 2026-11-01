@@ -17,7 +17,13 @@ jobs:
       - run: pip install -r requirements.txt
       - run: npm ci
       - run: python -m pytest -q
-      - run: python -m ruff check services tests scripts
+      - run: python -m ruff check services tests scripts experiments
+      - run: python scripts/check_contracts.py
       - run: npm test
       - run: npm run lint
       - run: npm run build
+      - run: python scripts/evaluate.py
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          E2E_CHANNEL: chromium

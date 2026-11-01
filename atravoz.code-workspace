@@ -1,1 +1,1 @@
-{"folders":[{"path":"."}],"settings":{"python.defaultInterpreterPath":"${workspaceFolder}/.venv/Scripts/python.exe"},"extensions":{"recommendations":["ms-python.python","charliermarsh.ruff","dbaeumer.vscode-eslint"]}}
+{"folders":[{"path":"."}],"settings":{"python.defaultInterpreterPath":"${workspaceFolder}/.venv/Scripts/python.exe"},"extensions":{"recommendations":["ms-python.python","charliermarsh.ruff","biomejs.biome"]}}
