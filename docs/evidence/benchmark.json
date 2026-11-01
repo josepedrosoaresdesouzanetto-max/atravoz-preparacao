@@ -1,22 +1,32 @@
 {
-  "recorded_at": "2026-11-01T05:15:06.019384+00:00",
+  "recorded_at": "2026-11-01T15:39:08.097333+00:00",
   "system": "Windows-11-10.0.26300-SP0",
   "python": "3.13.5",
   "rules": {
     "samples": 100,
-    "median_ms": 0.044,
-    "p95_ms": 0.083
+    "median_ms": 0.041,
+    "p95_ms": 0.082
   },
   "api_in_process_sqlite": {
     "samples": 50,
-    "median_ms": 16.447,
-    "p95_ms": 20.03
+    "median_ms": 15.562,
+    "p95_ms": 17.882
   },
   "build_assets": [
     {
       "file": "central.html",
       "bytes": 454,
-      "gzip_bytes": 306
+      "gzip_bytes": 304
+    },
+    {
+      "file": "icon-192.png",
+      "bytes": 939,
+      "gzip_bytes": 753
+    },
+    {
+      "file": "icon-512.png",
+      "bytes": 2839,
+      "gzip_bytes": 1873
     },
     {
       "file": "icon.svg",
@@ -26,37 +36,42 @@
     {
       "file": "index.html",
       "bytes": 565,
-      "gzip_bytes": 350
+      "gzip_bytes": 349
     },
     {
       "file": "manifest.webmanifest",
-      "bytes": 301,
-      "gzip_bytes": 224
+      "bytes": 607,
+      "gzip_bytes": 271
     },
     {
       "file": "sw.js",
-      "bytes": 948,
-      "gzip_bytes": 495
+      "bytes": 1012,
+      "gzip_bytes": 525
     },
     {
-      "file": "assets/citizen-o_Yk1q8e.js",
-      "bytes": 23142,
-      "gzip_bytes": 8480
+      "file": "assets/citizen-DWswjXpy.js",
+      "bytes": 26312,
+      "gzip_bytes": 9765
     },
     {
-      "file": "assets/operations-BP8hBxMy.js",
-      "bytes": 12254,
-      "gzip_bytes": 4246
+      "file": "assets/MeshPanel-BCsQ4I8k.js",
+      "bytes": 64655,
+      "gzip_bytes": 20612
+    },
+    {
+      "file": "assets/operations-BblnA_mk.js",
+      "bytes": 13573,
+      "gzip_bytes": 4598
+    },
+    {
+      "file": "assets/theme-DdmRMCnO.js",
+      "bytes": 315060,
+      "gzip_bytes": 95780
     },
     {
       "file": "assets/theme-s_K1xcCY.css",
       "bytes": 5076,
       "gzip_bytes": 1767
-    },
-    {
-      "file": "assets/theme-urUJDUUP.js",
-      "bytes": 313258,
-      "gzip_bytes": 95321
     }
   ],
   "limitations": "Processo local desktop, sem rede física; sem medição de bateria, aparelho modesto, carga concorrente ou usabilidade."

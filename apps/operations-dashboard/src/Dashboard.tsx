@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Brand } from "../../shared/Brand";
 import { statusLabels } from "../../../packages/contracts/src";
 import { DetailSchema, PageSchema, request, type Detail } from "./api";
@@ -11,6 +11,7 @@ const transitions: Record<string, string[]> = {
 	INVALIDADO: ["EM_VERIFICACAO", "CORRIGIDO"],
 };
 export function Dashboard() {
+	const session = useRef(0);
 	const [token, setToken] = useState(""),
 		[entry, setEntry] = useState("");
 	const [items, setItems] = useState<Detail[]>([]),
@@ -24,6 +25,7 @@ export function Dashboard() {
 		[note, setNote] = useState(""),
 		[lastUpdated, setLastUpdated] = useState("");
 	async function load(key = token, start = offset) {
+		const epoch = session.current;
 		setBusy(true);
 		setError("");
 		try {
@@ -32,6 +34,7 @@ export function Dashboard() {
 					await request(key, `/incidents?limit=100&offset=${start}`)
 				).json(),
 			);
+			if (epoch !== session.current) return;
 			setItems(page.items);
 			setTotal(page.total);
 			setOffset(start);
@@ -44,28 +47,30 @@ export function Dashboard() {
 					: null,
 			);
 		} catch (e) {
-			setError(String(e));
+			if (epoch === session.current) setError(String(e));
 		} finally {
-			setBusy(false);
+			if (epoch === session.current) setBusy(false);
 		}
 	}
 	async function detail(id: string) {
+		const epoch = session.current;
 		setBusy(true);
 		setError("");
 		try {
-			setSelected(
-				DetailSchema.parse(
-					await (await request(token, `/incidents/${id}`)).json(),
-				),
+			const result = DetailSchema.parse(
+				await (await request(token, `/incidents/${id}`)).json(),
 			);
+			if (epoch !== session.current) return;
+			setSelected(result);
 			setNote("");
 		} catch (e) {
-			setError(String(e));
+			if (epoch === session.current) setError(String(e));
 		} finally {
-			setBusy(false);
+			if (epoch === session.current) setBusy(false);
 		}
 	}
 	async function analyze() {
+		const epoch = session.current;
 		if (!selected) return;
 		setBusy(true);
 		setError("");
@@ -73,14 +78,16 @@ export function Dashboard() {
 			await request(token, `/incidents/${selected.incident_id}/analysis`, {
 				method: "POST",
 			});
+			if (epoch !== session.current) return;
 			await detail(selected.incident_id);
 		} catch (e) {
-			setError(String(e));
+			if (epoch === session.current) setError(String(e));
 		} finally {
-			setBusy(false);
+			if (epoch === session.current) setBusy(false);
 		}
 	}
 	async function review(status: string) {
+		const epoch = session.current;
 		if (!selected) return;
 		setBusy(true);
 		setError("");
@@ -93,15 +100,18 @@ export function Dashboard() {
 					expected_status: selected.status,
 				}),
 			});
+			if (epoch !== session.current) return;
 			await load();
+			if (epoch !== session.current) return;
 			await detail(selected.incident_id);
 		} catch (e) {
-			setError(String(e));
+			if (epoch === session.current) setError(String(e));
 		} finally {
-			setBusy(false);
+			if (epoch === session.current) setBusy(false);
 		}
 	}
 	async function download(id: string) {
+		const epoch = session.current;
 		if (!selected) return;
 		setBusy(true);
 		setError("");
@@ -111,6 +121,7 @@ export function Dashboard() {
 				`/incidents/${selected.incident_id}/attachments/${id}`,
 			);
 			const blob = await response.blob();
+			if (epoch !== session.current) return;
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement("a");
 			a.href = url;
@@ -118,9 +129,9 @@ export function Dashboard() {
 			a.click();
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 		} catch (e) {
-			setError(String(e));
+			if (epoch === session.current) setError(String(e));
 		} finally {
-			setBusy(false);
+			if (epoch === session.current) setBusy(false);
 		}
 	}
 	const visible = items.filter(
@@ -195,6 +206,8 @@ export function Dashboard() {
 							</button>
 							<button
 								onClick={() => {
+									session.current++;
+									setBusy(false);
 									setToken("");
 									setItems([]);
 									setSelected(null);
@@ -314,6 +327,50 @@ export function Dashboard() {
 										</span>
 									</div>
 									<p className="id">{selected.incident_id}</p>
+									<button
+										disabled={busy}
+										onClick={() =>
+											void (async () => {
+												const epoch = session.current;
+												setBusy(true);
+												try {
+													await request(
+														token,
+														`/incidents/${selected.incident_id}/viewed`,
+														{ method: "POST" },
+													);
+													if (epoch !== session.current) return;
+													await detail(selected.incident_id);
+												} catch (e) {
+													setError(
+														e instanceof Error
+															? e.message
+															: "Não foi possível registrar a visualização.",
+													);
+												} finally {
+													if (epoch === session.current) setBusy(false);
+												}
+											})()
+										}
+									>
+										Registrar que visualizei
+									</button>
+									{selected.mesh_deliveries.length > 0 && (
+										<div className="notice">
+											<strong>Recebimento por Rede Solidária</strong>
+											{selected.mesh_deliveries.map((d) => (
+												<p key={d.message_id}>
+													{d.hops} saltos declarados em cadeia assinada ·{" "}
+													{new Date(d.received_at).toLocaleString("pt-BR")}
+												</p>
+											))}
+											<small>
+												Assinaturas validadas; distância física e atendimento
+												não comprovados. Anexos podem continuar pendentes na
+												origem.
+											</small>
+										</div>
+									)}
 									<p className="preserve">
 										{selected.description || "Relato escrito não informado."}
 									</p>

@@ -29,6 +29,8 @@ async function checked(response: Response) {
 }
 export class SyncQueue {
 	private running = false;
+	beforeAttachments: (() => Promise<void>) | null = null;
+	relayFailure: unknown = null;
 	constructor(
 		private store: LocalStore,
 		private request: typeof fetch = fetch,
@@ -109,6 +111,13 @@ export class SyncQueue {
 			} catch (error) {
 				await this.fail(id, error);
 			}
+		}
+		// Relay essentials use the same scheduler, before original media. Failure is isolated.
+		this.relayFailure = null;
+		try {
+			await this.beforeAttachments?.();
+		} catch (error) {
+			this.relayFailure = error;
 		}
 		for (const stale of batch) {
 			const id = stale.incident.incident_id;

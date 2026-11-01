@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 const files=(await readdir('dist/assets')).map(f=>'/assets/'+f);
 const html=await readFile('dist/index.html','utf8');
 const version=createHash('sha256').update(html+files.join()).digest('hex').slice(0,12);
-const assets=['/','/index.html','/manifest.webmanifest','/icon.svg',...files];
+const assets=['/','/index.html','/manifest.webmanifest','/icon.svg','/icon-192.png','/icon-512.png',...files];
 await writeFile('dist/sw.js',`const CACHE='resilient-shell-${version}';
 const ASSETS=${JSON.stringify(assets)};
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS))));

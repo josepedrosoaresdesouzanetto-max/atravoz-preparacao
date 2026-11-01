@@ -12,4 +12,5 @@ sys.path.insert(0, str(ROOT / "services/intelligence/src"))
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("app.main:app", host="127.0.0.1", port=int(os.environ.get("PORT", "8000")), access_log=False)
+    uvicorn.run("app.main:app", host=os.environ.get("HOST", "127.0.0.1"), port=int(os.environ.get("PORT", "8000")), access_log=False,
+        ssl_certfile=os.environ.get("TLS_CERT_FILE"), ssl_keyfile=os.environ.get("TLS_KEY_FILE"))

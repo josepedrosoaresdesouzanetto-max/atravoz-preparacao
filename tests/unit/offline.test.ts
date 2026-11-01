@@ -173,6 +173,35 @@ describe("fila persistente", () => {
 		]);
 		expect(calls[2]).toContain("/attachments");
 	});
+	it("agenda essenciais de relay antes da mídia e isola falha mesh", async () => {
+		const s = makeStore(),
+			i = incident();
+		const manifest = {
+			attachment_id: crypto.randomUUID(),
+			kind: "audio" as const,
+			mime_type: "audio/webm" as const,
+			byte_size: 4,
+			sha256: "a".repeat(64),
+		};
+		i.attachments = [manifest];
+		await s.save(i, [{ manifest, blob: new Blob(["1234"]) }]);
+		const calls: string[] = [];
+		const request = vi.fn().mockImplementation(async (url) => {
+			calls.push(url.endsWith("/attachments") ? "media" : "own");
+			return url.endsWith("/attachments")
+				? new Response("", { status: 503 })
+				: Response.json(receipt(i.incident_id));
+		});
+		const queue = new SyncQueue(s, request);
+		queue.beforeAttachments = async () => {
+			calls.push("relay");
+			throw new Error("Relay unavailable");
+		};
+		await queue.run();
+		expect(calls).toEqual(["own", "relay", "media"]);
+		expect(queue.relayFailure).toBeInstanceOf(Error);
+		expect((await s.get(i.incident_id))?.receipt).not.toBeNull();
+	});
 	it("não regride um recibo persistido", async () => {
 		const s = makeStore(),
 			i = incident();

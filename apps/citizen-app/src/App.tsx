@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Brand } from "../../shared/Brand";
 import {
 	type Incident,
@@ -12,8 +12,10 @@ import {
 } from "./features/offline-storage/store";
 import { SyncQueue } from "./features/sync/queue";
 import { AudioCapture, preparePhoto } from "./features/media/capture";
+import { InstallPanel } from "./features/InstallPanel";
 import { locate } from "./features/location/location";
 
+const MeshPanel = lazy(() => import("./features/mesh/MeshPanel"));
 const store = new LocalStore();
 type Draft = {
 	description: string;
@@ -559,6 +561,7 @@ export function App() {
 					</p>
 				)}
 			</section>
+			<Suspense fallback={<p>Preparando painel de participação…</p>}><MeshPanel store={store} changed={refresh} survival={survival} syncQueue={queue} /></Suspense>
 			<label className="check">
 				<input
 					type="checkbox"
@@ -581,6 +584,7 @@ export function App() {
 					dados do navegador enquanto houver registros pendentes.
 				</small>
 			</p>
+			<InstallPanel />
 			<footer className="footer">
 				<div className="toolbar">
 					<span>Recebimento não significa atendimento.</span>
@@ -588,7 +592,7 @@ export function App() {
 				</div>
 				<p>
 					Bluetooth: transferência física ainda não implementada nem validada.
-					Nenhum registro é enviado para aparelhos próximos nesta versão.
+					A Rede Solidária usa conexão manual WebRTC entre participantes autorizados.
 				</p>
 			</footer>
 		</main>

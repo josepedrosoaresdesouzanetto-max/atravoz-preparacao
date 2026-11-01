@@ -1,0 +1,14 @@
+{
+  "incident_id": "fa882cdf-14a1-4849-86aa-ca9ccc0c9dbc",
+  "incident_rows_for_id": 1,
+  "deliveries": [
+    {
+      "message_id": "214001a9-d7e5-4c78-ba6d-1c73c901aca2",
+      "hops": 2,
+      "received_at": "2026-11-01T15:32:55.397369+00:00"
+    }
+  ],
+  "original_description_matches": true,
+  "server_receipt_id": "ff1cc813-64fd-4ca1-985d-9ab202cd4ddf",
+  "database_snapshot": "Read-only inspection of latest matching E2E SQLite file; database excluded from source package"
+}

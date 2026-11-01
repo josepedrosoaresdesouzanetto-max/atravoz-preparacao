@@ -16,3 +16,7 @@ Requisitos conforme texto fornecido pelo idealizador, sem aprovação independen
 | Elegibilidade do código prévio | Pendente | Solicitar orientação; histórico real não foi alterado |
 
 Não houve publicação em nome da equipe oficial. Não houve novo push após o envio inicial. Uso na competição depende das regras e orientações que vierem a ser comunicadas.
+
+## Efeito da evolução mesh
+
+Teste de software A→B→C acrescentado; entrega física no celular continua parcial e não validada. Não altera pendências de deploy autorizado, repositório oficial, pitch apresentado, validação Pró-Criança, composição da equipe ou aceitação de código prévio. CI remota continua restrita ao esqueleto inicial. A versão local tem 106 testes; não afirmar que rodaram no GitHub. Regras do evento continuam reportadas conforme briefing fornecido, sem verificação independente do edital completo.

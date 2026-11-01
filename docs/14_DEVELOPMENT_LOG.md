@@ -36,3 +36,15 @@ Microbenchmark executado com 100 análises por regras e 50 submissões locais em
 Bloqueios: SDK/adb/Ollama não encontrados; nenhum dispositivo físico usado; nenhuma inferência generativa real, transcrição ou validação Pró-Criança realizada. Protocolo fragmenta/valida/persiste em software, mas não implementa Bluetooth nem relay para API. Deploy público não autorizado; nenhum feito.
 
 Decisão de escopo: concluir o máximo do núcleo verificável, preservar autoria e deixar as limitações explícitas. Ficha oficial, papéis, licença, marca, dados reais e autorização de publicação final continuam pendentes.
+
+## Continuação Antena Humana — 01/11/2026
+
+O segundo prompt foi lido integralmente. Auditoria preservou branch main e trabalho anterior; 76 testes foram repetidos antes das mudanças. Documentação pendente foi preservada no commit local 3dcc3dd. Nenhum novo push.
+
+Implementados mesh-core isolado, JWE/JWS, credenciais de curta duração, convites de uso único, chaves privadas protegidas, chain de saltos, quotas, ACK durável, recibos centrais, gateway transacional e WebRTC com sinalização manual. Incluídos participação voluntária, pausa, rede/cotas/bateria, instalação PWA condicional, métricas de transporte e visualização explícita do operador. Regras e IA anterior preservadas.
+
+Problemas encontrados/corrigidos: import/tipos divergentes durante integração; seletor E2E exigia nome exato de botão cujo nome acessível inclui descrição; teste recarregava C antes de aguardar ACK; interface exibia código de conexão antigo durante geração de nova sessão; atualização da origem após recibo poderia ficar incompleta numa interrupção; respostas administrativas em voo podiam restaurar sessão depois de Sair. Corrigidos o código, a sincronização do ensaio e acrescentados testes de regressão. Não foram removidos testes falhos para elevar aprovação. Uma execução E2E usou build anterior após erro TypeScript; foi descartada como validação final, o build foi corrigido e a suite completa repetida.
+
+Resultado final: consultar MESH_CURRENT_STATUS.md/evidências, incluindo 106 testes. Interoperabilidade real entre jose no navegador e JWCrypto no Python exercitada, não só mocks. Três contextos no mesmo Windows, zero celulares. Revisão visual do screenshot pelo agente, sem atribuir validação humana.
+
+Auditorias npm/pip repetidas após novas dependências: zero vulnerabilidades conhecidas. Correção anterior de Pillow permanece local. Limpeza opcional de resíduo temporário do pip foi recusada pela revisão automática, sem razão específica informada; arquivo ignorado preservado, sem efeito nos testes. Nenhuma tentativa de contornar o bloqueio.

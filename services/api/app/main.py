@@ -18,6 +18,7 @@ from intelligence.contracts import Incident, ServerReceipt, StrictModel, Submiss
 from intelligence.pipeline import analyze  # noqa: E402
 from intelligence.providers import OllamaProvider  # noqa: E402
 from app.database import Database  # noqa: E402
+from app.mesh import register_mesh  # noqa: E402
 from app.media import validate_media  # noqa: E402
 from app.security import RequestLimits, key_hash, require_operator  # noqa: E402
 
@@ -37,7 +38,7 @@ TRANSITIONS = {
 }
 
 
-def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120):
+def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120, mesh_authority=None):
     api = FastAPI(title="Resilient communications", version="1.0.0", docs_url=None, redoc_url=None)
     db = Database(str(db_path or os.environ.get("DATABASE_PATH", ROOT / "runtime/incidents.sqlite3")))
     api.state.db = db
@@ -103,37 +104,43 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120)
         if not hmac.compare_digest(row["key_hash"], key_hash(token)):
             raise HTTPException(401, "Chave de envio inválida.")
 
-    @api.post("/api/v1/incidents", response_model=ServerReceipt)
-    def submit(submission: Submission):
+    def persist(submission, conn):
         incident = submission.incident
         payload = incident.model_dump_json()
         iid, hashed = str(incident.incident_id), key_hash(submission.write_key)
+        old = conn.execute("SELECT * FROM incidents WHERE id=?", (iid,)).fetchone()
+        if old:
+            owned(old, "Bearer " + submission.write_key)
+            if old["payload"] != payload:
+                raise HTTPException(
+                    409, "Mesmo identificador com conteúdo diferente. Preserve e revise; não sobrescreva."
+                )
+            return ServerReceipt.model_validate_json(old["receipt"])
+        if conn.execute("SELECT COUNT(*) FROM incidents").fetchone()[0] >= 5000:
+            raise HTTPException(507, "Limite demonstrativo de ocorrências atingido.")
+        receipt = ServerReceipt(incident_id=incident.incident_id)
+        at = receipt.server_received_at.isoformat()
+        conn.execute(
+            "INSERT INTO incidents VALUES(?,?,?,?,?,?)",
+            (iid, payload, hashed, receipt.model_dump_json(), at, receipt.status),
+        )
+        conn.execute(
+            "INSERT INTO history(incident_id,status,at,actor,note) VALUES(?,?,?,?,?)",
+            (iid, receipt.status, at, "api", "Persistência técnica; sem confirmação de atendimento."),
+        )
+        conn.execute(
+            "INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)", (iid, at, "api", "created")
+        )
+        return receipt
+
+    @api.post("/api/v1/incidents", response_model=ServerReceipt)
+    def submit(submission: Submission):
         with db.connect() as conn:
             conn.execute("BEGIN IMMEDIATE")
-            old = conn.execute("SELECT * FROM incidents WHERE id=?", (iid,)).fetchone()
-            if old:
-                owned(old, "Bearer " + submission.write_key)
-                if old["payload"] != payload:
-                    raise HTTPException(
-                        409, "Mesmo identificador com conteúdo diferente. Preserve e revise; não sobrescreva."
-                    )
-                return ServerReceipt.model_validate_json(old["receipt"])
-            if conn.execute("SELECT COUNT(*) FROM incidents").fetchone()[0] >= 5000:
-                raise HTTPException(507, "Limite demonstrativo de ocorrências atingido.")
-            receipt = ServerReceipt(incident_id=incident.incident_id)
-            at = receipt.server_received_at.isoformat()
-            conn.execute(
-                "INSERT INTO incidents VALUES(?,?,?,?,?,?)",
-                (iid, payload, hashed, receipt.model_dump_json(), at, receipt.status),
-            )
-            conn.execute(
-                "INSERT INTO history(incident_id,status,at,actor,note) VALUES(?,?,?,?,?)",
-                (iid, receipt.status, at, "api", "Persistência técnica; sem confirmação de atendimento."),
-            )
-            conn.execute(
-                "INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)", (iid, at, "api", "created")
-            )
+            receipt = persist(submission, conn)
         return receipt
+
+    register_mesh(api, db, admin, persist, mesh_authority)
 
     @api.get("/api/v1/incidents")
     def listing(
@@ -153,6 +160,19 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120)
     def detail(incident_id: UUID, actor=Depends(admin)):
         with db.connect() as conn:
             return db.detail(conn, get_row(conn, incident_id))
+
+    @api.post("/api/v1/incidents/{incident_id}/viewed")
+    def viewed(incident_id: UUID, actor=Depends(admin)):
+        at = utcnow().isoformat()
+        with db.connect() as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            row = get_row(conn, incident_id)
+            conn.execute("INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)",
+                         (str(incident_id), at, actor, "operator_view_acknowledged"))
+            conn.execute("INSERT INTO history(incident_id,status,at,actor,note) VALUES(?,?,?,?,?)",
+                         (str(incident_id), row["status"], at, actor,
+                          "Operador declarou visualização; não confirma veracidade nem atendimento."))
+        return {"event": "OPERATOR_VIEW_ACKNOWLEDGED", "at": at}
 
     @api.get("/api/v1/incidents/{incident_id}/status")
     def status(incident_id: UUID, authorization: str = Header(default="")):

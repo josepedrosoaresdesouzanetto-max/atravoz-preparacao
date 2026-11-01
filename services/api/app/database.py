@@ -76,4 +76,7 @@ class Database:
                 "SELECT result FROM analyses WHERE incident_id=? ORDER BY rowid DESC LIMIT 5", (row["id"],)
             )
         ]
+        item["mesh_deliveries"] = [dict(x) for x in conn.execute(
+            "SELECT message_id,hops,received_at FROM mesh_deliveries WHERE incident_id=? ORDER BY received_at LIMIT 20", (row["id"],)
+        )]
         return item

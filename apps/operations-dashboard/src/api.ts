@@ -48,6 +48,15 @@ export const DetailSchema = IncidentSchema.safeExtend({
 		}),
 	),
 	analyses: z.array(Analysis),
+	mesh_deliveries: z
+		.array(
+			z.object({
+				message_id: z.string().uuid(),
+				hops: z.number().int(),
+				received_at: z.string(),
+			}),
+		)
+		.default([]),
 });
 export const PageSchema = z.object({
 	items: z.array(DetailSchema),

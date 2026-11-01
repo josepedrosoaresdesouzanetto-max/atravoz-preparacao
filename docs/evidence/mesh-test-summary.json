@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-11-01T15:39:05.184573+00:00",
+  "tests": {
+    "python": 63,
+    "typescript": 36,
+    "browser": 7
+  },
+  "total": 106,
+  "baseline_tests_preserved": 76,
+  "new_tests": 30,
+  "synthetic_rules_cases": 12,
+  "physical_devices": 0,
+  "checks": [
+    "pytest",
+    "ruff",
+    "canonical schemas (3)",
+    "vitest",
+    "biome",
+    "TypeScript",
+    "Vite build",
+    "Playwright Edge",
+    "rules evaluation (12/12)"
+  ],
+  "npm_known_vulnerabilities": 0,
+  "python_known_advisories": 0,
+  "browser_stats": {
+    "startTime": "2026-11-01T15:32:44.091Z",
+    "duration": 13136.594,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "limitations": [
+    "Three browser contexts on one computer, not three phones",
+    "HTTP 503 interception represents WAN unavailability; no real radio outage",
+    "No physical installation, native BLE/Wi-Fi Direct, background operation, real LLM or human review"
+  ],
+  "intermediate_failures": "Recorded in docs/14_DEVELOPMENT_LOG.md; final complete run passed."
+}

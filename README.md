@@ -8,6 +8,8 @@ Protótipo para registrar informações quando a conexão falha, contextualizado
 
 O cenário B foi exercitado no Microsoft Edge desktop com viewport móvel: criar offline, fechar a página, reabrir offline, reconectar, receber recibo com mesmo ID e consultar a central. Fotos e áudio de fonte artificial também passaram pelo fluxo. Isso não equivale a testes em celular físico. Bluetooth físico e cenário A permanecem pendentes. O processamento padrão usa regras determinísticas; adaptador Ollama implementado e testado com transporte simulado, sem execução de modelo real.
 
+A Rede Solidária acrescenta transporte WebRTC manual com cifragem, credenciais, quotas e recibos. A→B→C→API e retorno passaram em três contextos Edge no mesmo computador; nenhum celular físico foi testado. Veja [estado mesh](docs/MESH_CURRENT_STATUS.md), [instalação/provisionamento](docs/INSTALLATION.md), [arquitetura](docs/MESH_ARCHITECTURE.md) e [handoff](docs/TEAM_HANDOFF.md).
+
 O [relatório final](docs/FINAL_REPORT.md), a [matriz de aceitação](docs/22_CURRENT_STATUS.md) e as [limitações](docs/18_KNOWN_LIMITATIONS.md) separam implementação de validação.
 
 ## Abrir no VS Code
@@ -60,7 +62,8 @@ Comandos individuais: `.venv/Scripts/python.exe -m pytest -q`, `npm test`, `npm 
 | Área | Pasta / ponto de entrada | Responsabilidade proposta |
 |---|---|---|
 | Cidadão, fila, mídia e localização | `apps/citizen-app/src/App.tsx`, `src/features/` | Desenvolvedor 1 |
-| Experimento de transporte | `experiments/bluetooth-android` | Desenvolvedor 1 |
+| Mesh e transporte | `packages/mesh-core`, `features/mesh` | Desenvolvedor 1, com revisão do Dev 2 |
+| Experimento histórico sem rádio | `experiments/bluetooth-android` | Referência de laboratório |
 | API, SQLite e segurança | `services/api/app/main.py` | Desenvolvedor 2 |
 | Central autenticada | `apps/operations-dashboard/src/Dashboard.tsx` | Desenvolvedor 3 |
 | Dados, IA e Qualidade | `services/intelligence` | Idealizador, proposta a confirmar |

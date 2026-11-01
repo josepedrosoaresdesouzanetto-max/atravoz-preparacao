@@ -18,3 +18,7 @@
 - Regras do evento e licença dependem de confirmação humana. Preparação não equivale a entrega oficial.
 
 Nenhum bloqueio foi tratado como validação concluída. Consulte a matriz de aceitação e os testes efetivamente executados.
+
+## Evolução posterior
+
+Estado atualizado em MESH_CURRENT_STATUS.md, MESH_SECURITY.md e MESH_COMPATIBILITY.md. O antigo experimento sem rádio permanece como histórico. Agora existe WebRTC manual real validado em três perfis desktop, mas não Bluetooth, Wi-Fi Direct, descoberta, operação contínua em segundo plano ou demonstração física. Não confundir essa evolução com remoção dos limites de produção, privacidade ou atendimento.

@@ -13,3 +13,9 @@ Intervenção humana efetivamente recebida: fornecimento do prompt mestre, conce
 Pendências: ler/entender código, revisar corpus e segurança, testar dispositivos, validar com público, registrar correções humanas reais e obter orientação da organização sobre reutilização prévia.
 
 Correção posterior de segurança: atualização local de Pillow 12.3.0 para 13.0.0 com base no resultado de pip-audit, seguida de repetição dos testes. O repositório remoto foi preservado no commit inicial conforme a restrição do usuário.
+
+## Evolução mesh
+
+Novo requisito humano: Rede Mesh Oportunista Antena Humana, consentimento, segurança, cotas e preservação do fluxo anterior, mantendo ATRAVOZ. Codex implementou os novos módulos, testes, correções e documentação. Nenhuma contribuição manual de implementação ou revisão humana foi inventada. Sem subagentes. Bibliotecas JOSE reconhecidas foram usadas; desenho de protocolo ainda requer auditoria humana.
+
+Ensaio de software real com três contextos Edge e Python; ausência de WAN representada por HTTP 503 para A/B. Não houve três telefones, rádio Bluetooth, instalação móvel ou revisão humana. Ferramenta de IA no produto continua opcional e sem inferência de modelo real nesta execução. Métricas de transporte são determinísticas e não estimam vítimas ou prioridade de resgate.

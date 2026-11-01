@@ -17,3 +17,7 @@ Ainda não confirmada. Registrar posteriormente: integrante, atividade, arquivo/
 ## Validação humana
 
 Nenhuma revisão humana de código, teste manual em celular ou validação Pró-Criança foi realizada/documentada nesta sessão. Inspeção visual pelo agente e testes automatizados não substituem essa etapa. Trabalho humano pendente: revisão técnica, compreensão da implementação, teste do problema/protótipo, avaliação de segurança e acordo de responsabilidades.
+
+## Especificação humana da continuação
+
+O idealizador acrescentou Antena Humana como rede oportunista, separação de ACK intermediário/central, consentimento, limites de bateria/dados, identidade autorizada, cifragem, revogação, deduplicação e exigência de evidência física. Pediu preservar ATRAVOZ e proibir novos pushes. Essas decisões de produto são contribuições humanas. A arquitetura detalhada executável, código JOSE/WebRTC, testes e correções foram produzidos com assistência do Codex. Não houve revisão ou implementação manual atribuída ao idealizador.

@@ -24,3 +24,9 @@ Limites atuais: doze casos escritos junto com regras, sem medição de generaliz
 “Idealizei o problema, defini os requisitos e a estratégia de comunicação. Estou proposto para Dados, IA e Qualidade. A implementação inicial foi produzida com assistência do Codex; estou revisando os contratos, avaliando saídas e preparando a integração com a equipe.” Use “revisei” ou “validei” somente após executar essas atividades e registrar evidência.
 
 Registro futuro de revisão: data real, arquivos/casos analisados, problemas encontrados, alteração realizada, testes executados e revisor. Nenhum desses campos foi preenchido como se já tivesse ocorrido.
+
+## Dados, IA e Qualidade na rede oportunista
+
+Novo módulo `src/intelligence/transport_quality.py`: distingue envelopes entregues, ocorrências distintas e envelopes adicionais da mesma ocorrência. O histograma mostra saltos declarados em cadeias verificadas; não indica proximidade da vítima, número de pessoas ou severidade. Endpoint autenticado GET /api/v1/mesh/metrics. Cópias que continuam offline não entram nessa métrica central.
+
+Revise `services/intelligence/tests/test_transport_quality.py`, `services/api/tests/test_mesh.py` e `tests/unit/mesh.test.ts`. Experimente relato semelhante com incident_id independente: não deve ser fundido. Confirme que o original e a localização de A não são substituídos por informações de B/C. A IA só analisa o relato na central depois da decriptação autorizada; relays não leem conteúdo nem executam instruções recebidas. Registre as revisões que você efetivamente realizar, sem atribuir a si o código gerado.

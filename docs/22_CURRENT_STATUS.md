@@ -22,3 +22,7 @@
 Bluetooth nativo: NÃO INICIADO. Protocolo: implementado e testado em software, sem rádio nem integração de relay. Áudio físico/GPS/câmera real, bateria, iPhone, aparelhos modestos, deploy e validação humana estão abertos.
 
 Estado de entrega: base local funcional nas partes aprovadas, com bloqueios explícitos; não produto operacional de emergência nem cumprimento integral do hackathon.
+
+## Continuação mesh — estado posterior
+
+A matriz acima descreve a entrega anterior. O estado vigente da evolução é MESH_CURRENT_STATUS.md: 106 testes, gateway criptográfico e WebRTC manual exercitado em três perfis no mesmo computador. Os requisitos físicos e oficiais continuam pendentes. Nenhum novo push.
