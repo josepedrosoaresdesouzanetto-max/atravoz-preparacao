@@ -1,0 +1,12 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+	"files": { "includes": ["apps/**", "packages/**", "tests/**"] },
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "none",
+			"correctness": { "noUnusedImports": "error", "noUnreachable": "error" },
+			"suspicious": { "noExplicitAny": "error", "noDoubleEquals": "error" }
+		}
+	}
+}
