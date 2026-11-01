@@ -1,5 +1,5 @@
 {
-  "source_files_checked": 157,
+  "source_files_checked": 159,
   "credential_pattern_findings": [],
   "missing_required_doc_prefixes": [],
   "limits": "Busca de padrões, não auditoria completa de segredos, privacidade ou segurança."

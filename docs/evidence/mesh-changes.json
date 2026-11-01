@@ -1,0 +1,286 @@
+{
+  "baseline": "3dcc3dd9df4cc14ab82b484a81784b158edc5bad",
+  "implementation_commit": "421035eb640fc3f3d1863cfe1820ffe14f6c2dde",
+  "files": [
+    {
+      "status": "M",
+      "path": ".env.example"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "A",
+      "path": "apps/citizen-app/public/icon-192.png"
+    },
+    {
+      "status": "A",
+      "path": "apps/citizen-app/public/icon-512.png"
+    },
+    {
+      "status": "M",
+      "path": "apps/citizen-app/public/manifest.webmanifest"
+    },
+    {
+      "status": "M",
+      "path": "apps/citizen-app/src/App.tsx"
+    },
+    {
+      "status": "A",
+      "path": "apps/citizen-app/src/features/InstallPanel.tsx"
+    },
+    {
+      "status": "A",
+      "path": "apps/citizen-app/src/features/mesh/MeshPanel.tsx"
+    },
+    {
+      "status": "M",
+      "path": "apps/citizen-app/src/features/sync/queue.ts"
+    },
+    {
+      "status": "M",
+      "path": "apps/operations-dashboard/src/Dashboard.tsx"
+    },
+    {
+      "status": "M",
+      "path": "apps/operations-dashboard/src/api.ts"
+    },
+    {
+      "status": "M",
+      "path": "docs/14_DEVELOPMENT_LOG.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/15_AI_USAGE.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/16_CONTRIBUTIONS.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/18_KNOWN_LIMITATIONS.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/21_HACKATHON_COMPLIANCE.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/22_CURRENT_STATUS.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/AI_USAGE.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/CONTRIBUTIONS.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/DEVELOPMENT_LOG.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/INSTALLATION.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_ARCHITECTURE.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_COMPATIBILITY.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_CURRENT_STATUS.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_PROTOCOL.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_RESOURCE_POLICY.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_ROUTING.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_SECURITY.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/MESH_TEST_PLAN.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/TEAM_HANDOFF.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/benchmark.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/central-desktop.png"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/citizen-mobile.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/evidence/mesh-database-proof.json"
+    },
+    {
+      "status": "A",
+      "path": "docs/evidence/mesh-origin.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/evidence/mesh-test-summary.json"
+    },
+    {
+      "status": "A",
+      "path": "docs/evidence/mesh-validation.txt"
+    },
+    {
+      "status": "A",
+      "path": "docs/evidence/mesh-webrtc.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/npm-audit.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/python-audit.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/evidence/source-check.json"
+    },
+    {
+      "status": "M",
+      "path": "package-lock.json"
+    },
+    {
+      "status": "M",
+      "path": "package.json"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/README.md"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/framing.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/node.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/protocol.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/resource-policy.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/security.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/storage.ts"
+    },
+    {
+      "status": "A",
+      "path": "packages/mesh-core/src/webrtc.ts"
+    },
+    {
+      "status": "M",
+      "path": "playwright.config.ts"
+    },
+    {
+      "status": "M",
+      "path": "requirements.in"
+    },
+    {
+      "status": "M",
+      "path": "requirements.txt"
+    },
+    {
+      "status": "M",
+      "path": "scripts/build-sw.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/provision_mesh.py"
+    },
+    {
+      "status": "M",
+      "path": "scripts/serve.py"
+    },
+    {
+      "status": "M",
+      "path": "services/api/app/database.py"
+    },
+    {
+      "status": "M",
+      "path": "services/api/app/main.py"
+    },
+    {
+      "status": "A",
+      "path": "services/api/app/mesh.py"
+    },
+    {
+      "status": "A",
+      "path": "services/api/tests/test_mesh.py"
+    },
+    {
+      "status": "M",
+      "path": "services/intelligence/OWNER_HANDOFF.md"
+    },
+    {
+      "status": "M",
+      "path": "services/intelligence/reports/EVALUATION.md"
+    },
+    {
+      "status": "M",
+      "path": "services/intelligence/reports/evaluation.json"
+    },
+    {
+      "status": "A",
+      "path": "services/intelligence/src/intelligence/transport_quality.py"
+    },
+    {
+      "status": "A",
+      "path": "services/intelligence/tests/test_transport_quality.py"
+    },
+    {
+      "status": "A",
+      "path": "tests/e2e/logout.spec.ts"
+    },
+    {
+      "status": "A",
+      "path": "tests/e2e/mesh.spec.ts"
+    },
+    {
+      "status": "A",
+      "path": "tests/unit/mesh.test.ts"
+    },
+    {
+      "status": "M",
+      "path": "tests/unit/offline.test.ts"
+    }
+  ]
+}
