@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-11-01T05:18:14.996053+00:00",
+  "python_passed": 53,
+  "typescript_passed": 18,
+  "browser_passed": 5,
+  "browser_failed": 0,
+  "browser_flaky": 0,
+  "browser_duration_ms": 7181.415,
+  "environment": "Windows desktop, Microsoft Edge, viewport móvel e desktop; áudio artificial",
+  "warnings": [
+    "Starlette TestClient deprecia uso de httpx; testes continuam passando.",
+    "Rollup removeu dois comentários de anotação de Zod; build completou.",
+    "Runner Playwright avisou sobre NO_COLOR/FORCE_COLOR."
+  ],
+  "not_tested": [
+    "celular físico",
+    "Bluetooth físico",
+    "modelo generativo real",
+    "microfone físico",
+    "GPS real",
+    "validação humana"
+  ]
+}

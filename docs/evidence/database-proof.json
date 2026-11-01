@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-11-01T05:18:14.999181+00:00",
+  "database_file": "e2e-1793510199847.sqlite3",
+  "counts": {
+    "incidents": 4,
+    "attachments": 2,
+    "analyses": 1,
+    "history": 5,
+    "audit": 8
+  },
+  "incidents": [
+    {
+      "id": "eae033f6-cef7-4ec4-97a0-59a00f8316fe",
+      "received_at": "2026-11-01T05:16:42.701310+00:00",
+      "status": "EM_VERIFICACAO"
+    },
+    {
+      "id": "b1df46fe-02f5-45c5-aedc-b1f60efaecc9",
+      "received_at": "2026-11-01T05:16:44.441433+00:00",
+      "status": "RECEBIDO_SERVIDOR"
+    },
+    {
+      "id": "3e3d104d-76b8-4dbc-bdfc-2bfdd685c08b",
+      "received_at": "2026-11-01T05:16:45.062003+00:00",
+      "status": "RECEBIDO_SERVIDOR"
+    },
+    {
+      "id": "1dca3dc8-be13-4a81-9cea-339ec3dbbff7",
+      "received_at": "2026-11-01T05:16:46.482467+00:00",
+      "status": "RECEBIDO_SERVIDOR"
+    }
+  ],
+  "only_synthetic": true,
+  "note": "Consulta direta ao SQLite do último E2E, após encerramento do servidor de testes; sem chaves de envio."
+}

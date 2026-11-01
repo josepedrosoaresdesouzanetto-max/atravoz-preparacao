@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-01T05:15:06.019384+00:00",
+  "system": "Windows-11-10.0.26300-SP0",
+  "python": "3.13.5",
+  "rules": {
+    "samples": 100,
+    "median_ms": 0.044,
+    "p95_ms": 0.083
+  },
+  "api_in_process_sqlite": {
+    "samples": 50,
+    "median_ms": 16.447,
+    "p95_ms": 20.03
+  },
+  "build_assets": [
+    {
+      "file": "central.html",
+      "bytes": 454,
+      "gzip_bytes": 306
+    },
+    {
+      "file": "icon.svg",
+      "bytes": 251,
+      "gzip_bytes": 191
+    },
+    {
+      "file": "index.html",
+      "bytes": 565,
+      "gzip_bytes": 350
+    },
+    {
+      "file": "manifest.webmanifest",
+      "bytes": 301,
+      "gzip_bytes": 224
+    },
+    {
+      "file": "sw.js",
+      "bytes": 948,
+      "gzip_bytes": 495
+    },
+    {
+      "file": "assets/citizen-o_Yk1q8e.js",
+      "bytes": 23142,
+      "gzip_bytes": 8480
+    },
+    {
+      "file": "assets/operations-BP8hBxMy.js",
+      "bytes": 12254,
+      "gzip_bytes": 4246
+    },
+    {
+      "file": "assets/theme-s_K1xcCY.css",
+      "bytes": 5076,
+      "gzip_bytes": 1767
+    },
+    {
+      "file": "assets/theme-urUJDUUP.js",
+      "bytes": 313258,
+      "gzip_bytes": 95321
+    }
+  ],
+  "limitations": "Processo local desktop, sem rede física; sem medição de bateria, aparelho modesto, carga concorrente ou usabilidade."
+}

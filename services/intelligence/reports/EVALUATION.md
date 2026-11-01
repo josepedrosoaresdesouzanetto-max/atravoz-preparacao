@@ -1,6 +1,6 @@
 # Avaliação sintética executada
 
-Data UTC: 2026-11-01T05:16:47.509080+00:00.
+Data UTC: 2026-11-01T15:04:03.616773+00:00.
 
 12/12 casos passaram nas cinco verificações. Provedor: regras determinísticas, sem chamada a modelo.
 
