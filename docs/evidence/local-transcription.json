@@ -1,0 +1,18 @@
+{
+  "executed": true,
+  "kind": "real-local-transcription",
+  "source": "Windows SAPI Microsoft Maria, synthetic Portuguese speech; no microphone or victim recording",
+  "expected_text": "Teste fictício. Duas pessoas precisam de água. Não é uma emergência real.",
+  "result": {
+    "processing_status": "transcribed",
+    "text": "Testifique-te-se. Doas pessoas precisam de água. Não é uma emergência real.",
+    "language": "pt",
+    "duration_s": 8.68,
+    "model_name": "faster-whisper-local",
+    "human_review_required": true
+  },
+  "elapsed_seconds": 2.853,
+  "audio_sha256": "ab8c99f85cf320244f7b32293c1dd996493959df34b35089bd36c394445cbca1",
+  "external_inference_calls": 0,
+  "limits": "One synthetic sample with tiny model; no general accuracy claim or physical microphone validation."
+}

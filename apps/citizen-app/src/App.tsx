@@ -1,3 +1,5 @@
+import { DiagnosticsPanel } from "../../shared/DiagnosticsPanel";
+import { diagnostics } from "../../../packages/diagnostics/src";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Brand } from "../../shared/Brand";
 import {
@@ -12,6 +14,8 @@ import {
 } from "./features/offline-storage/store";
 import { SyncQueue } from "./features/sync/queue";
 import { AudioCapture, preparePhoto } from "./features/media/capture";
+import { apiFetch, isAndroid } from "../../shared/native";
+import { ConnectionSettings } from "../../shared/ConnectionSettings";
 import { InstallPanel } from "./features/InstallPanel";
 import { locate } from "./features/location/location";
 
@@ -151,6 +155,13 @@ export function App() {
 		[mediaBusy, setMediaBusy] = useState(false);
 	const [message, setMessage] = useState(""),
 		[error, setError] = useState("");
+	const reportError = (value: string) => {
+		setError(value);
+		if (value)
+			void diagnostics.record("APP_FAILURE", "app", "save", {
+				recovery: "manual",
+			});
+	};
 	const [survival, setSurvival] = useState(false),
 		[offlineReady, setOfflineReady] = useState(false),
 		[recording, setRecording] = useState(false);
@@ -158,7 +169,7 @@ export function App() {
 	const recorder = useMemo(() => new AudioCapture(), []);
 	const queue = useMemo(
 		() =>
-			new SyncQueue(store, fetch, () =>
+			new SyncQueue(store, apiFetch, () =>
 				window.dispatchEvent(new Event("records-changed")),
 			),
 		[],
@@ -168,7 +179,7 @@ export function App() {
 			.list()
 			.then(setRecords)
 			.catch(() =>
-				setError(
+				reportError(
 					"Não foi possível ler o armazenamento. Não apague os dados do navegador.",
 				),
 			);
@@ -183,23 +194,29 @@ export function App() {
 				setReady(true);
 			})
 			.catch(() =>
-				setError("Armazenamento indisponível. O registro ainda não foi salvo."),
+				reportError(
+					"Armazenamento indisponível. O registro ainda não foi salvo.",
+				),
 			);
 		void refresh();
 		const update = () => {
 			void refresh();
 		};
 		window.addEventListener("records-changed", update);
-		if ("serviceWorker" in navigator && import.meta.env.PROD)
+		if (isAndroid()) setOfflineReady(true);
+		else if ("serviceWorker" in navigator && import.meta.env.PROD)
 			navigator.serviceWorker
 				.register("/sw.js")
 				.then(() => navigator.serviceWorker.ready)
 				.then(() => setOfflineReady(true))
-				.catch(() =>
-					setError(
+				.catch(() => {
+					void diagnostics.record("UPDATE_FAILED", "update", "update", {
+						recovery: "retry",
+					});
+					reportError(
 						"Cache offline não foi preparado. Mantenha esta página aberta e tente novamente com conexão.",
-					),
-				);
+					);
+				});
 		return () => {
 			window.removeEventListener("records-changed", update);
 			recorder.stop();
@@ -212,7 +229,7 @@ export function App() {
 				store
 					.setSetting("draft", draft)
 					.catch(() =>
-						setError(
+						reportError(
 							"Falha ao guardar o rascunho. Tente salvar o registro mínimo.",
 						),
 					),
@@ -228,7 +245,7 @@ export function App() {
 				void queue
 					.run()
 					.catch(() =>
-						setError(
+						reportError(
 							"Falha no armazenamento da fila. Seus registros precisam de revisão.",
 						),
 					);
@@ -251,7 +268,7 @@ export function App() {
 	}, [queue, ready, survival]);
 	async function save(type: "help" | "witness") {
 		setBusy(true);
-		setError("");
+		reportError("");
 		setMessage("Salvando neste aparelho…");
 		try {
 			const now = new Date().toISOString();
@@ -296,11 +313,14 @@ export function App() {
 				void queue
 					.run()
 					.catch(() =>
-						setError("Registro salvo; falha ao atualizar a fila de envio."),
+						reportError("Registro salvo; falha ao atualizar a fila de envio."),
 					);
 		} catch (e) {
 			setMessage("");
-			setError(
+			void diagnostics.record("STORAGE_FAILED", "storage", "save", {
+				recovery: "manual",
+			});
+			reportError(
 				`Não foi possível salvar. Preserve esta tela e tente novamente. ${e instanceof Error ? e.message : ""}`,
 			);
 		} finally {
@@ -310,7 +330,7 @@ export function App() {
 	async function photo(file?: File) {
 		if (!file) return;
 		setMediaBusy(true);
-		setError("");
+		reportError("");
 		try {
 			const item = await preparePhoto(file);
 			setDraft((d) => ({
@@ -318,13 +338,14 @@ export function App() {
 				media: [...d.media.filter((m) => m.manifest.kind !== "photo"), item],
 			}));
 		} catch (e) {
-			setError(String(e));
+			void diagnostics.record("CAMERA_FAILED", "media", "capture");
+			reportError(String(e));
 		} finally {
 			setMediaBusy(false);
 		}
 	}
 	async function audio() {
-		setError("");
+		reportError("");
 		if (recording) {
 			recorder.stop();
 			return;
@@ -342,13 +363,15 @@ export function App() {
 					setRecording(false);
 				},
 				(e) => {
-					setError(e);
+					void diagnostics.record("MICROPHONE_FAILED", "media", "capture");
+					reportError(e);
 					setRecording(false);
 				},
 			);
 			setRecording(true);
 		} catch {
-			setError(
+			void diagnostics.record("MICROPHONE_FAILED", "media", "capture");
+			reportError(
 				"Microfone indisponível ou permissão negada. Você pode registrar sem áudio.",
 			);
 			setRecording(false);
@@ -452,7 +475,7 @@ export function App() {
 								const l = await locate();
 								setDraft((d) => ({ ...d, location: l }));
 							} catch (e) {
-								setError(String(e));
+								reportError(String(e));
 							}
 						}}
 					>
@@ -534,7 +557,7 @@ export function App() {
 								await queue.run(true);
 								await refresh();
 							} catch {
-								setError(
+								reportError(
 									"Não foi possível sincronizar. Registros preservados.",
 								);
 							} finally {
@@ -561,7 +584,14 @@ export function App() {
 					</p>
 				)}
 			</section>
-			<Suspense fallback={<p>Preparando painel de participação…</p>}><MeshPanel store={store} changed={refresh} survival={survival} syncQueue={queue} /></Suspense>
+			<Suspense fallback={<p>Preparando painel de participação…</p>}>
+				<MeshPanel
+					store={store}
+					changed={refresh}
+					survival={survival}
+					syncQueue={queue}
+				/>
+			</Suspense>
 			<label className="check">
 				<input
 					type="checkbox"
@@ -570,7 +600,9 @@ export function App() {
 						setSurvival(e.target.checked);
 						void store
 							.setSetting("survival", e.target.checked)
-							.catch(() => setError("Não foi possível guardar a preferência."));
+							.catch(() =>
+								reportError("Não foi possível guardar a preferência."),
+							);
 					}}
 				/>
 				Modo Sobrevivência · reduzir verificações automáticas
@@ -584,15 +616,18 @@ export function App() {
 					dados do navegador enquanto houver registros pendentes.
 				</small>
 			</p>
-			<InstallPanel />
+			<DiagnosticsPanel />
+			<ConnectionSettings />
+			{!isAndroid() && <InstallPanel />}
 			<footer className="footer">
 				<div className="toolbar">
 					<span>Recebimento não significa atendimento.</span>
 					<a href="/central.html">Central demonstrativa ↗</a>
 				</div>
 				<p>
-					Bluetooth: transferência física ainda não implementada nem validada.
-					A Rede Solidária usa conexão manual WebRTC entre participantes autorizados.
+					{isAndroid()
+						? "Bluetooth experimental disponível na Rede Solidária. Testes físicos entre celulares ainda pendentes."
+						: "No navegador, a Rede Solidária usa conexão manual WebRTC. Bluetooth experimental disponível apenas no APK Android."}
 				</p>
 			</footer>
 		</main>

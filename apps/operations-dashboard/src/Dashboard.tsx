@@ -1,3 +1,7 @@
+import { CentralInstall } from "./CentralInstall";
+import { MeshEnrollment } from "./MeshEnrollment";
+import { SystemDiagnostics } from "./SystemDiagnostics";
+import { DiagnosticsPanel } from "../../shared/DiagnosticsPanel";
 import { useRef, useState } from "react";
 import { Brand } from "../../shared/Brand";
 import { statusLabels } from "../../../packages/contracts/src";
@@ -12,6 +16,7 @@ const transitions: Record<string, string[]> = {
 };
 export function Dashboard() {
 	const session = useRef(0);
+	const [transcript, setTranscript] = useState("");
 	const [token, setToken] = useState(""),
 		[entry, setEntry] = useState("");
 	const [items, setItems] = useState<Detail[]>([]),
@@ -62,6 +67,7 @@ export function Dashboard() {
 			);
 			if (epoch !== session.current) return;
 			setSelected(result);
+			setTranscript("");
 			setNote("");
 		} catch (e) {
 			if (epoch === session.current) setError(String(e));
@@ -106,6 +112,34 @@ export function Dashboard() {
 			await detail(selected.incident_id);
 		} catch (e) {
 			if (epoch === session.current) setError(String(e));
+		} finally {
+			if (epoch === session.current) setBusy(false);
+		}
+	}
+	async function transcribe(id: string) {
+		if (!selected) return;
+		const epoch = session.current;
+		setBusy(true);
+		setTranscript("");
+		try {
+			const response = await (
+				await request(
+					token,
+					`/incidents/${selected.incident_id}/attachments/${id}/transcribe`,
+					{ method: "POST" },
+				)
+			).json();
+			if (epoch !== session.current) return;
+			if (
+				response.original_unchanged !== true ||
+				response.transcript?.processing_status !== "transcribed" ||
+				typeof response.transcript?.text !== "string"
+			)
+				throw new Error("Transcrição inválida.");
+			setTranscript(response.transcript.text);
+		} catch (e) {
+			if (epoch === session.current)
+				setError(e instanceof Error ? e.message : "Transcrição não concluída.");
 		} finally {
 			if (epoch === session.current) setBusy(false);
 		}
@@ -161,6 +195,10 @@ export function Dashboard() {
 					{error}
 				</p>
 			)}
+			{token && <SystemDiagnostics key={token} token={token} />}
+			{token && <MeshEnrollment key={`enrollment-${token}`} token={token} />}
+			<DiagnosticsPanel />
+			<CentralInstall />
 			{!token ? (
 				<form
 					className="card login"
@@ -211,6 +249,7 @@ export function Dashboard() {
 									setToken("");
 									setItems([]);
 									setSelected(null);
+									setTranscript("");
 									setNote("");
 									setFilter("");
 									setTotal(0);
@@ -415,6 +454,11 @@ export function Dashboard() {
 									</div>
 									<div className="detail-row">
 										<strong>Anexos</strong>
+										{transcript && (
+											<p className="notice">
+												Transcrição local não revisada: {transcript}
+											</p>
+										)}
 										{selected.attachments.length ? (
 											selected.attachments.map((a) => (
 												<p key={a.attachment_id}>
@@ -431,6 +475,17 @@ export function Dashboard() {
 													) : (
 														"ainda não recebido"
 													)}
+													{a.kind === "audio" &&
+														selected.received_attachments.some(
+															(r) => r.id === a.attachment_id,
+														) && (
+															<button
+																disabled={busy}
+																onClick={() => void transcribe(a.attachment_id)}
+															>
+																Transcrever áudio local
+															</button>
+														)}
 												</p>
 											))
 										) : (

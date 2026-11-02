@@ -1,11 +1,11 @@
 {
-  "tested_at": "2026-11-01T15:32:56.503Z",
+  "tested_at": "2026-11-02T01:31:04.509Z",
   "transport": "RTCPeerConnection / RTCDataChannel",
   "environment": "Three isolated Edge browser contexts on one Windows computer",
   "physical_devices": 0,
   "wan_loss": "HTTP 503 interception for A and B; not loss of physical radio",
   "route": "A → B (reload) → C (reload) → API; receipt C → B → A",
-  "incident_id": "fa882cdf-14a1-4849-86aa-ca9ccc0c9dbc",
+  "incident_id": "590cb8eb-d61f-4bf8-9891-8d2cd1d257d8",
   "verified_hops": 2,
   "independent_incidents": 1,
   "origin_notified_only_after_receipt_return": true,

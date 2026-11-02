@@ -175,6 +175,59 @@ def test_ai_failure_preserves_incident(client):
     assert record["status"] == "RECEBIDO_SERVIDOR" and record["description"].startswith("Três")
 
 
+def test_transcription_requires_auth_and_preserves_received_audio(client):
+    data = b"RIFF" + b"\x00" * 4 + b"WAVE" + b"synthetic test container"
+    iid, aid, headers = with_attachment(client, data, "audio/wav", "audio")
+    base = f"/api/v1/incidents/{iid}"
+    path = base + f"/attachments/{aid}/transcribe"
+    assert client.post(base + "/attachments", content=data, headers=headers).status_code == 200
+    original = client.get(base, headers=ADMIN).json()["description"]
+    assert client.post(path).status_code == 401
+    assert client.post(path, headers=ADMIN).status_code == 503
+
+    class ControlledTranscriber:
+        def transcribe(self, audio, mime, language):
+            assert audio == data and mime == "audio/wav" and language == "pt"
+            return {
+                "processing_status": "transcribed",
+                "text": "Saída controlada, sem inferência.",
+                "language": "pt",
+                "duration_s": 1,
+                "model_name": "test-double",
+                "human_review_required": True,
+            }
+
+    client.app.state.transcriber = ControlledTranscriber()
+    result = client.post(path, headers=ADMIN)
+    assert result.status_code == 200 and result.json()["original_unchanged"]
+    assert result.json()["transcript"]["human_review_required"] is True
+    assert client.get(base, headers=ADMIN).json()["description"] == original
+    assert client.get(base + f"/attachments/{aid}", headers=ADMIN).content == data
+    client.app.state.inference_gate.acquire()
+    try:
+        assert client.post(path, headers=ADMIN).status_code == 429
+        assert client.post(base + "/analysis", headers=ADMIN).status_code == 429
+    finally:
+        client.app.state.inference_gate.release()
+
+
+def test_invalid_transcription_fails_closed_without_changing_audio(client):
+    data = b"RIFF" + b"\x00" * 4 + b"WAVE" + b"synthetic test container"
+    iid, aid, headers = with_attachment(client, data, "audio/wav", "audio")
+    base = f"/api/v1/incidents/{iid}/attachments"
+    client.post(base, content=data, headers=headers)
+
+    class InvalidTranscriber:
+        def transcribe(self, *_):
+            return {"text": "Missing review requirement and schema"}
+
+    client.app.state.transcriber = InvalidTranscriber()
+    assert client.post(base + f"/{aid}/transcribe", headers=ADMIN).status_code == 503
+    assert client.get(base + f"/{aid}", headers=ADMIN).content == data
+    assert client.app.state.inference_gate.acquire(blocking=False)
+    client.app.state.inference_gate.release()
+
+
 def test_review_is_audited_and_does_not_claim_rescue(client):
     iid = client.post("/api/v1/incidents", json=payload()).json()["incident_id"]
     path = f"/api/v1/incidents/{iid}"

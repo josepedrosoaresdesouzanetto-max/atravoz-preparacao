@@ -1,3 +1,4 @@
+import { apiFetch } from "../../shared/native";
 import { z } from "zod";
 import { IncidentSchema } from "../../../packages/contracts/src";
 const Analysis = z.object({
@@ -70,7 +71,7 @@ export async function request(
 	path: string,
 	init: RequestInit = {},
 ) {
-	const result = await fetch("/api/v1" + path, {
+	const result = await apiFetch("/api/v1" + path, {
 		...init,
 		headers: {
 			Authorization: `Bearer ${token}`,

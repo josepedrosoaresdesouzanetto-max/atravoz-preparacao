@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "runtime": "packaged-executable",
+  "pid": 19072,
+  "loopback_port": 64949,
+  "authenticated_api": true,
+  "persistent_database_after_restart": true,
+  "mesh_authority_dpapi": true,
+  "diagnostics": true,
+  "clean_shutdown": true,
+  "public_listener": false,
+  "firewall_changed": false,
+  "duplicate_instance_rejected": true,
+  "delivered_copy_executed": true
+}

@@ -1,3 +1,5 @@
+> Histórico da fase anterior (pré-0.2.0). Para o estado atual de APK, Bluetooth nativo, Windows, PWA, diagnósticos e IA, leia [INSTALLERS_FINAL_REPORT.md](INSTALLERS_FINAL_REPORT.md) e [INSTALLATION_PHASE.md](INSTALLATION_PHASE.md).
+
 # Estado verificado — 01/11/2026
 
 Implementado e exercitado: store-carry-forward cifrado, credenciais, convites, assinaturas, cotas, IndexedDB persistente, gateway idempotente, recibos de ida/volta, controle voluntário e transporte WebRTC manual. A→B→C→API e retorno C→B→A passaram em três contextos isolados do Edge no mesmo computador. Isso não comprova mesh física de celulares.

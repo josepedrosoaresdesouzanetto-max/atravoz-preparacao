@@ -1,3 +1,5 @@
+> Histórico da fase anterior (pré-0.2.0). Para o estado atual de APK, Bluetooth nativo, Windows, PWA, diagnósticos e IA, leia [INSTALLERS_FINAL_REPORT.md](INSTALLERS_FINAL_REPORT.md) e [INSTALLATION_PHASE.md](INSTALLATION_PHASE.md).
+
 # ATRAVOZ — relatório da evolução Antena Humana
 
 Preparação privada em 01/11/2026. Este documento substitui o relatório anterior em elaboração. Os resultados distinguem implementação, ensaio de software e validação física.

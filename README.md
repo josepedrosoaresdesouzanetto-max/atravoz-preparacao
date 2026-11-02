@@ -4,13 +4,13 @@
 
 Protótipo para registrar informações quando a conexão falha, contextualizado para chuvas extremas no Recife. Salva no aparelho, tenta sincronizar e mostra na central somente o que o servidor persistiu. **Não aciona socorro nem representa uma central oficial. Use somente dados fictícios.**
 
-## Estado real
+## Estado real — 0.2.0-test
 
-O cenário B foi exercitado no Microsoft Edge desktop com viewport móvel: criar offline, fechar a página, reabrir offline, reconectar, receber recibo com mesmo ID e consultar a central. Fotos e áudio de fonte artificial também passaram pelo fluxo. Isso não equivale a testes em celular físico. Bluetooth físico e cenário A permanecem pendentes. O processamento padrão usa regras determinísticas; adaptador Ollama implementado e testado com transporte simulado, sem execução de modelo real.
+APK Android real recompilado/assinado e central Windows portátil compilada/executada. Bluetooth Classic/RFCOMM implementado; nenhum telefone instalado/testado. Central Mobile PWA usa a mesma API. Diagnósticos JSON/Markdown, envio autorizado e importação local foram testados. 141 casos automatizados aprovados, mais avaliação determinística e verificações dos pacotes.
 
-A Rede Solidária acrescenta transporte WebRTC manual com cifragem, credenciais, quotas e recibos. A→B→C→API e retorno passaram em três contextos Edge no mesmo computador; nenhum celular físico foi testado. Veja [estado mesh](docs/MESH_CURRENT_STATUS.md), [instalação/provisionamento](docs/INSTALLATION.md), [arquitetura](docs/MESH_ARCHITECTURE.md) e [handoff](docs/TEAM_HANDOFF.md).
+Transcrição local executada com uma fala sintética e erros registrados. Adaptador generativo disponível; inferência real não executada por bloqueio automático do ambiente, que não foi contornado. Rádio físico, dois/três celulares, instalação da PWA e acesso HTTPS para os aparelhos continuam pendentes.
 
-O [relatório final](docs/FINAL_REPORT.md), a [matriz de aceitação](docs/22_CURRENT_STATUS.md) e as [limitações](docs/18_KNOWN_LIMITATIONS.md) separam implementação de validação.
+Leia o [relatório atual](docs/INSTALLERS_FINAL_REPORT.md), [guia de instalação](docs/INSTALLATION_PHASE.md), [teste de dois celulares sem USB](docs/NATIVE_TRANSPORT.md), [diagnósticos](docs/DIAGNOSTICS.md) e [IA local](docs/LOCAL_AI.md). Entregáveis: `outputs/entregas/ATRAVOZ-0.2.0-test`, ao lado desta pasta de código. Relatórios anteriores documentam a fase pré-APK e continuam preservados como histórico. Remoto privado sem novos pushes.
 
 ## Abrir no VS Code
 

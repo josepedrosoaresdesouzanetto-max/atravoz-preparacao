@@ -1,0 +1,6 @@
+# Optional separate environment. Download model before use; inference remains offline.
+faster-whisper==1.2.1
+ctranslate2==4.8.4
+av==19.0.2
+pydantic==2.14.2
+httpx==0.28.1

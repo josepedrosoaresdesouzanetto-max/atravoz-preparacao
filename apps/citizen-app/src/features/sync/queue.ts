@@ -1,3 +1,4 @@
+import { diagnostics } from "../../../../../packages/diagnostics/src";
 import { ReceiptSchema } from "../../../../../packages/contracts/src";
 import {
 	LocalStore,
@@ -58,6 +59,13 @@ export class SyncQueue {
 		});
 	}
 	private async fail(id: string, error: unknown) {
+		const original = await this.store.get(id);
+		void diagnostics.record(
+			original?.receipt ? "UPLOAD_FAILED" : "SYNC_FAILED",
+			"sync",
+			original?.receipt ? "upload" : "send",
+			{ attempt: original?.attempts || 0, recovery: "queued" },
+		);
 		await this.store.update(id, (row) => {
 			row.last_error =
 				error instanceof Error
@@ -103,6 +111,9 @@ export class SyncQueue {
 					);
 				await this.store.update(id, (r) => {
 					r.receipt = receipt;
+					void diagnostics.record("RECOVERED", "sync", "send", {
+						result: "recovered",
+					});
 					setStatus(r, "RECEBIDO_SERVIDOR");
 					r.last_error = null;
 					r.next_attempt = 0;

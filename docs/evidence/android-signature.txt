@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=ATRAVOZ Development, O=Prototype, C=BR
+Signer #1 certificate SHA-256 digest: 5c4e9546b694e01bc5430f78613c56052fb749040b56c54bb4707cd18d6dc18d
+Signer #1 certificate SHA-1 digest: 64e30063fa72636fe88b850449b6754344cf7aa1
+Signer #1 certificate MD5 digest: 84be2fdfb5954b1918b62587adca9e6b
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: 61824a2e96a9e156364e7beccdd66dd613096bf833476a6f101ab538dc09fc28
+Signer #1 public key SHA-1 digest: 1035728bf97899237dd836510bf8b552e3a8c5ba
+Signer #1 public key MD5 digest: 4b33ab405c09d478a5871445280a3fb9

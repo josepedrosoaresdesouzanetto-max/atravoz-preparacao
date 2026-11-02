@@ -1,3 +1,5 @@
+import BluetoothPanel from "./BluetoothPanel";
+import { apiFetch, isAndroid } from "../../../../shared/native";
 import { useEffect, useRef, useState } from "react";
 import { MeshNode } from "../../../../../packages/mesh-core/src/node";
 import {
@@ -28,7 +30,7 @@ import { LocalStore, setStatus } from "../offline-storage/store";
 
 const meshStore = new MeshStore();
 async function api(path: string, body?: unknown) {
-	const response = await fetch(`/api/v1/mesh/${path}`, {
+	const response = await apiFetch(`/api/v1/mesh/${path}`, {
 		method: body ? "POST" : "GET",
 		headers: body ? { "Content-Type": "application/json" } : {},
 		body: body ? JSON.stringify(body) : undefined,
@@ -267,11 +269,15 @@ export default function MeshPanel({
 			</h2>
 			<p>
 				Carregue cópias cifradas de pedidos entre participantes autorizados. Só
-				a central pode abrir o conteúdo. A conexão desta versão exige troca
-				manual de códigos, navegador aberto e uma rede local compatível.
+				a central pode abrir o conteúdo.{" "}
+				{isAndroid()
+					? "Use Bluetooth com o aplicativo aberto e participantes previamente autorizados."
+					: "A conexão WebRTC exige troca manual de códigos, navegador aberto e uma rede local compatível."}
 			</p>
 			<p className="notice">
-				Bluetooth, Wi-Fi Direct e busca automática não estão implementados.
+				{isAndroid()
+					? "Descoberta Bluetooth iniciada pelo usuário; comunicação física ainda aguarda validação em celulares."
+					: "Bluetooth está disponível apenas no APK experimental. Wi-Fi Direct não está implementado."}
 				Entrega por intermediário não confirma atendimento. Não use dados reais
 				nesta demonstração.
 			</p>
@@ -646,6 +652,9 @@ export default function MeshPanel({
 			>
 				Enviar cópias à central
 			</button>
+			{node && policy.enabled && !policy.paused && !survival && (
+				<BluetoothPanel node={node} prepare={() => prepare(node)} />
+			)}
 			<p data-testid="mesh-counts">
 				{rows.filter((r) => r.ownIncidentId).length} envelopes próprios ·{" "}
 				{rows.filter((r) => !r.ownIncidentId).length} cópias cifradas de

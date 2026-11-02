@@ -1,3 +1,4 @@
+import { diagnostics } from "../../diagnostics/src";
 import type { Incident } from "../../contracts/src";
 import {
 	HopClaims,
@@ -63,7 +64,10 @@ export class MeshNode {
 			this.identity,
 			this.trust,
 			this.now(),
-		);
+		).catch((error) => {
+			void diagnostics.record("CRYPTO_FAILED", "mesh", "save");
+			throw error;
+		});
 		return (
 			await this.store.accept(
 				await verifyEnvelope(env, this.trust, this.now()),
@@ -87,6 +91,10 @@ export class MeshNode {
 			throw new Error("Sessão e remetente não correspondem.");
 		const hop = HopClaims.parse(await verify(last.proof, sender.jwk));
 		const result = await this.store.accept(checked, this.policy, this.now());
+		if (result.duplicate)
+			void diagnostics.record("DUPLICATE_AVOIDED", "mesh", "receive", {
+				result: "success",
+			});
 		await this.store.metric(
 			result.duplicate
 				? { duplicates: 1 }
@@ -197,6 +205,9 @@ export class MeshNode {
 					});
 				} catch (error) {
 					await this.store.metric({ failures: 1 });
+					void diagnostics.record("MESH_TRANSFER_FAILED", "mesh", "send", {
+						recovery: "queued",
+					});
 					throw error;
 				}
 			}
@@ -274,6 +285,9 @@ export class MeshNode {
 					await this.store.metric({ bytesSent: row.bytes });
 				} catch (error) {
 					await this.store.metric({ failures: 1 });
+					void diagnostics.record("MESH_TRANSFER_FAILED", "mesh", "send", {
+						recovery: "queued",
+					});
 					throw error;
 				}
 			}

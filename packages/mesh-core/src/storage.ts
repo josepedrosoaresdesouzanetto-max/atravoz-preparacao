@@ -1,3 +1,4 @@
+import { diagnostics } from "../../diagnostics/src";
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 import type { Envelope, Identity, Trust, VerifiedEnvelope } from "./protocol";
 import type { ResourcePolicy } from "./resource-policy";
@@ -118,7 +119,7 @@ export class MeshStore {
 			m.internetBytes = 0;
 		}
 		if (m.internetBytes + bytes > policy.dailyInternetBytes)
-			throw new Error("Cota diária de internet atingida.");
+			throw resourceLimit("Cota diária de internet atingida.");
 		m.internetBytes += bytes;
 		await tx.store.put(m, "metrics");
 		await tx.done;
@@ -143,7 +144,7 @@ export class MeshStore {
 		if (old)
 			throw new Error("Mensagem já finalizada ou expirada; replay recusado.");
 		if ((await tx.objectStore("seen").count()) >= 2048)
-			throw new Error("Cota de proteção contra replay atingida.");
+			throw resourceLimit("Cota de proteção contra replay atingida.");
 		const rows = await tx.objectStore("messages").getAll();
 		const relays = rows.filter((r) => !r.ownIncidentId),
 			bytes = new TextEncoder().encode(JSON.stringify(checked.envelope)).length;
@@ -152,11 +153,11 @@ export class MeshStore {
 			(relays.length >= policy.maxMessages ||
 				relays.reduce((sum, r) => sum + r.bytes, 0) + bytes > policy.relayBytes)
 		)
-			throw new Error(
+			throw resourceLimit(
 				"Cota de retransmissão cheia; pedido de origem não foi apagado.",
 			);
 		if (ownIncidentId && rows.filter((r) => r.ownIncidentId).length >= 100)
-			throw new Error(
+			throw resourceLimit(
 				"Limite de envelopes próprios; ocorrência original preservada.",
 			);
 		const row: MeshRow = {
@@ -241,4 +242,11 @@ export class MeshStore {
 	async close() {
 		(await this.db).close();
 	}
+}
+
+function resourceLimit(message: string) {
+	void diagnostics.record("RESOURCE_LIMIT", "storage", "save", {
+		recovery: "manual",
+	});
+	return new Error(message);
 }

@@ -1,0 +1,19 @@
+{
+  "apk_bytes": 4165194,
+  "sha256": "54800fe11f5fe13ce603aaef6c0b2400d67fad7ded3cc630351ed1d54bfc3bb8",
+  "package": "br.org.atravoz.cidadao",
+  "version": "0.2.0-test",
+  "versionCode": 2,
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "zip_integrity": true,
+  "all_current_web_assets_match": true,
+  "web_asset_count": 15,
+  "signature_v2_verified": true,
+  "development_signature": true,
+  "android_jvm_tests": 6,
+  "failures": 0,
+  "errors": 0,
+  "physical_installation": false,
+  "physical_radio_test": false
+}

@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-01",
+  "baseline": {
+    "python": 63,
+    "typescript": 36,
+    "browser": 7,
+    "total": 106
+  },
+  "final": {
+    "python": 82,
+    "typescript": 43,
+    "browser": 10,
+    "android_jvm": 6,
+    "total": 141,
+    "failed": 0
+  },
+  "additional_checks": {
+    "ruff": true,
+    "biome": true,
+    "typescript_compile": true,
+    "web_build": true,
+    "json_contracts": 3,
+    "deterministic_evaluation_cases": 12,
+    "deterministic_evaluation_passed": 12,
+    "packaged_windows_self_test": true,
+    "apk_signature_and_structure": true
+  },
+  "vulnerability_audits": {
+    "npm": 0,
+    "python_central_and_build": 0,
+    "python_optional_transcription": 0,
+    "maven_runtime_packages": 50,
+    "maven_runtime_advisories": 0
+  },
+  "warning": "Starlette TestClient deprecation of httpx; no failing test. Android deprecated API/compiler and Gradle warnings do not prove physical compatibility.",
+  "physical_devices": 0,
+  "physical_installation": false,
+  "physical_bluetooth": false,
+  "generative_inference": false,
+  "local_synthetic_transcription": true
+}

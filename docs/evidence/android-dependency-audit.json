@@ -1,0 +1,258 @@
+{
+  "source": "OSV querybatch",
+  "ecosystem": "Maven",
+  "packages_checked": 50,
+  "packages": [
+    {
+      "name": "androidx.activity:activity",
+      "version": "1.11.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.annotation:annotation",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.annotation:annotation-experimental",
+      "version": "1.4.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.annotation:annotation-jvm",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.appcompat:appcompat",
+      "version": "1.7.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.appcompat:appcompat-resources",
+      "version": "1.7.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.arch.core:core-common",
+      "version": "2.2.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.arch.core:core-runtime",
+      "version": "2.2.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.collection:collection",
+      "version": "1.4.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.collection:collection-jvm",
+      "version": "1.4.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.concurrent:concurrent-futures",
+      "version": "1.1.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.coordinatorlayout:coordinatorlayout",
+      "version": "1.3.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.core:core",
+      "version": "1.17.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.core:core-ktx",
+      "version": "1.17.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.core:core-splashscreen",
+      "version": "1.2.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.core:core-viewtree",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.cursoradapter:cursoradapter",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.customview:customview",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.drawerlayout:drawerlayout",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.emoji2:emoji2",
+      "version": "1.3.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.emoji2:emoji2-views-helper",
+      "version": "1.3.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.fragment:fragment",
+      "version": "1.8.9",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.interpolator:interpolator",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-common",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-livedata",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-livedata-core",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-process",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-runtime",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-viewmodel",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.lifecycle:lifecycle-viewmodel-savedstate",
+      "version": "2.6.2",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.loader:loader",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.profileinstaller:profileinstaller",
+      "version": "1.4.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.resourceinspection:resourceinspection-annotation",
+      "version": "1.0.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.savedstate:savedstate",
+      "version": "1.2.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.startup:startup-runtime",
+      "version": "1.1.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.tracing:tracing",
+      "version": "1.2.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.vectordrawable:vectordrawable",
+      "version": "1.1.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.vectordrawable:vectordrawable-animated",
+      "version": "1.1.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.versionedparcelable:versionedparcelable",
+      "version": "1.1.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.viewpager:viewpager",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "androidx.webkit:webkit",
+      "version": "1.14.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "com.google.guava:listenablefuture",
+      "version": "1.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.apache.cordova:framework",
+      "version": "14.0.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains.kotlin:kotlin-stdlib",
+      "version": "2.0.21",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains.kotlinx:kotlinx-coroutines-android",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains.kotlinx:kotlinx-coroutines-bom",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "version": "1.8.1",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jetbrains:annotations",
+      "version": "23.0.0",
+      "vulnerabilities": []
+    },
+    {
+      "name": "org.jspecify:jspecify",
+      "version": "1.0.0",
+      "vulnerabilities": []
+    }
+  ],
+  "limits": "Runtime Maven dependencies only. No independent code audit; absence of known advisory does not prove security."
+}

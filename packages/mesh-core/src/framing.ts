@@ -1,3 +1,4 @@
+import { diagnostics } from "../../diagnostics/src";
 import { z } from "zod";
 import { digest } from "./security";
 const frameSchema = z
@@ -78,13 +79,20 @@ export class Reassembler {
 		const data = Array.from({ length: entry.total }, (_, i) =>
 			entry!.parts.get(i),
 		).join("");
-		if ((await digest(data)) !== entry.hash)
+		if ((await digest(data)) !== entry.hash) {
+			void diagnostics.record("INTEGRITY_REJECTED", "mesh", "receive");
 			throw new Error("Pacote corrompido.");
+		}
 		return JSON.parse(data) as unknown;
 	}
 	expire() {
 		for (const [id, e] of this.pending)
-			if (e.until <= this.now()) this.pending.delete(id);
+			if (e.until <= this.now()) {
+				this.pending.delete(id);
+				void diagnostics.record("FRAGMENT_REJECTED", "mesh", "receive", {
+					recovery: "retry",
+				});
+			}
 	}
 	clear() {
 		this.pending.clear();

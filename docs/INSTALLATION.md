@@ -1,3 +1,5 @@
+> Histórico da fase anterior (pré-0.2.0). Para o estado atual de APK, Bluetooth nativo, Windows, PWA, diagnósticos e IA, leia [INSTALLERS_FINAL_REPORT.md](INSTALLERS_FINAL_REPORT.md) e [INSTALLATION_PHASE.md](INSTALLATION_PHASE.md).
+
 # Instalação e operação local
 
 Abra a pasta ATRAVOZ no VS Code, conforme README. Requisitos exercitados: Windows, Python 3.13.5, Node 24.14.1 e Edge. O ZIP de fonte não contém dependências, bancos, chaves ou credenciais.

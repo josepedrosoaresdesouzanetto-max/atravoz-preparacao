@@ -1,3 +1,5 @@
+import threading
+import time
 import hashlib
 import hmac
 import os
@@ -12,13 +14,15 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(os.environ.get("ATRAVOZ_RESOURCE_DIR", Path(__file__).resolve().parents[3]))
 sys.path.insert(0, str(ROOT / "services/intelligence/src"))
 from intelligence.contracts import Incident, ServerReceipt, StrictModel, Submission, utcnow  # noqa: E402
 from intelligence.pipeline import analyze  # noqa: E402
 from intelligence.providers import OllamaProvider  # noqa: E402
+from intelligence.local_models import LocalChatProvider, LocalWhisperProvider, Transcript  # noqa: E402
 from app.database import Database  # noqa: E402
 from app.mesh import register_mesh  # noqa: E402
+from app.diagnostics import register_diagnostics  # noqa: E402
 from app.media import validate_media  # noqa: E402
 from app.security import RequestLimits, key_hash, require_operator  # noqa: E402
 
@@ -57,6 +61,31 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120,
                     raise RuntimeError("Model configuration unavailable")
 
             api.state.provider = MisconfiguredProvider()
+    if provider is None and os.environ.get("AI_PROVIDER") == "local-chat":
+        try:
+            api.state.provider = LocalChatProvider(
+                os.environ.get("AI_MODEL", ""), os.environ.get("AI_LOCAL_URL", "http://127.0.0.1:11435")
+            )
+        except ValueError:
+
+            class InvalidLocalProvider:
+                name = "misconfigured-local-chat"
+
+                def extract(self, text):
+                    raise RuntimeError("Local model configuration unavailable")
+
+            api.state.provider = InvalidLocalProvider()
+    api.state.inference_gate = threading.BoundedSemaphore(1)
+    api.state.transcriber = None
+    if os.environ.get("TRANSCRIPTION_PYTHON") and os.environ.get("TRANSCRIPTION_MODEL_DIR"):
+        try:
+            api.state.transcriber = LocalWhisperProvider(
+                os.environ["TRANSCRIPTION_PYTHON"],
+                os.environ["TRANSCRIPTION_MODEL_DIR"],
+                ROOT / "scripts/transcribe_local.py",
+            )
+        except ValueError:
+            pass
     admin = require_operator(
         operator_token if operator_token is not None else os.environ.get("OPERATOR_TOKEN", "")
     )
@@ -64,7 +93,19 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120,
 
     @api.middleware("http")
     async def security_headers(request, call_next):
+        started = time.perf_counter()
         response = await call_next(request)
+        if response.status_code >= 400 and hasattr(api.state, "diagnostic_event"):
+            path = request.url.path
+            module = "mesh" if "/mesh/" in path else "ai" if "/analysis" in path else "api"
+            code = (
+                "MESH_TRANSFER_FAILED"
+                if module == "mesh"
+                else "AI_FAILED"
+                if module == "ai"
+                else "API_FAILED"
+            )
+            api.state.diagnostic_event(code, module, "receive", (time.perf_counter() - started) * 1000)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Content-Security-Policy"] = (
@@ -141,6 +182,7 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120,
         return receipt
 
     register_mesh(api, db, admin, persist, mesh_authority)
+    register_diagnostics(api, db, admin)
 
     @api.get("/api/v1/incidents")
     def listing(
@@ -167,12 +209,56 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120,
         with db.connect() as conn:
             conn.execute("BEGIN IMMEDIATE")
             row = get_row(conn, incident_id)
-            conn.execute("INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)",
-                         (str(incident_id), at, actor, "operator_view_acknowledged"))
-            conn.execute("INSERT INTO history(incident_id,status,at,actor,note) VALUES(?,?,?,?,?)",
-                         (str(incident_id), row["status"], at, actor,
-                          "Operador declarou visualização; não confirma veracidade nem atendimento."))
+            conn.execute(
+                "INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)",
+                (str(incident_id), at, actor, "operator_view_acknowledged"),
+            )
+            conn.execute(
+                "INSERT INTO history(incident_id,status,at,actor,note) VALUES(?,?,?,?,?)",
+                (
+                    str(incident_id),
+                    row["status"],
+                    at,
+                    actor,
+                    "Operador declarou visualização; não confirma veracidade nem atendimento.",
+                ),
+            )
         return {"event": "OPERATOR_VIEW_ACKNOWLEDGED", "at": at}
+
+    @api.post("/api/v1/incidents/{incident_id}/attachments/{attachment_id}/transcribe")
+    def transcribe(incident_id: UUID, attachment_id: UUID, actor=Depends(admin)):
+        if api.state.transcriber is None:
+            raise HTTPException(503, "Transcrição local não configurada; áudio original preservado.")
+        with db.connect() as conn:
+            get_row(conn, incident_id)
+            row = conn.execute(
+                "SELECT mime,bytes FROM attachments WHERE incident_id=? AND id=?",
+                (str(incident_id), str(attachment_id)),
+            ).fetchone()
+        if not row or not row["mime"].startswith("audio/"):
+            raise HTTPException(404, "Áudio recebido não encontrado.")
+        if not api.state.inference_gate.acquire(blocking=False):
+            raise HTTPException(429, "Processamento de IA ocupado; tente depois.")
+        try:
+            result = Transcript.model_validate(
+                api.state.transcriber.transcribe(row["bytes"], row["mime"], "pt")
+            ).model_dump()
+        except Exception:
+            api.state.diagnostic_event("AI_FAILED", "ai", "analyze")
+            raise HTTPException(503, "Transcrição não concluída; áudio original preservado.") from None
+        finally:
+            api.state.inference_gate.release()
+        with db.connect() as conn:
+            conn.execute(
+                "INSERT INTO audit(incident_id,at,actor,action) VALUES(?,?,?,?)",
+                (str(incident_id), utcnow().isoformat(), actor, "local_transcription_requested"),
+            )
+        return {
+            "incident_id": str(incident_id),
+            "attachment_id": str(attachment_id),
+            "transcript": result,
+            "original_unchanged": True,
+        }
 
     @api.get("/api/v1/incidents/{incident_id}/status")
     def status(incident_id: UUID, authorization: str = Header(default="")):
@@ -255,7 +341,14 @@ def create_app(db_path=None, operator_token=None, provider=None, rate_limit=120,
                 Incident.model_validate_json(r[0])
                 for r in conn.execute("SELECT payload FROM incidents ORDER BY received_at DESC LIMIT 200")
             ]
-        result = analyze(Incident.model_validate_json(row["payload"]), api.state.provider, candidates)
+        if not api.state.inference_gate.acquire(blocking=False):
+            raise HTTPException(429, "Processamento de IA ocupado; tente depois.")
+        try:
+            result = analyze(Incident.model_validate_json(row["payload"]), api.state.provider, candidates)
+        finally:
+            api.state.inference_gate.release()
+        if result.processing_status == "fallback":
+            api.state.diagnostic_event("AI_FAILED", "ai", "analyze", result.duration_ms, recovery="fallback")
         with db.connect() as conn:
             conn.execute(
                 "INSERT INTO analyses VALUES(?,?,?)",
