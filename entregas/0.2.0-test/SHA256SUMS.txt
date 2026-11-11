@@ -1,0 +1,2 @@
+54800fe11f5fe13ce603aaef6c0b2400d67fad7ded3cc630351ed1d54bfc3bb8  ATRAVOZ-Cidadao-0.2.0-test.apk
+9cf236254949584c59cdeb5471f230d165fcc2f914cf5f16a5aca1ff7d3c27d8  ATRAVOZ-Central-Windows-0.2.0-test.zip

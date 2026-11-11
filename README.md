@@ -10,7 +10,9 @@ APK Android real recompilado/assinado e central Windows portátil compilada/exec
 
 Transcrição local executada com uma fala sintética e erros registrados. Adaptador generativo disponível; inferência real não executada por bloqueio automático do ambiente, que não foi contornado. Rádio físico, dois/três celulares, instalação da PWA e acesso HTTPS para os aparelhos continuam pendentes.
 
-Leia o [relatório atual](docs/INSTALLERS_FINAL_REPORT.md), [guia de instalação](docs/INSTALLATION_PHASE.md), [teste de dois celulares sem USB](docs/NATIVE_TRANSPORT.md), [diagnósticos](docs/DIAGNOSTICS.md) e [IA local](docs/LOCAL_AI.md). Entregáveis: `outputs/entregas/ATRAVOZ-0.2.0-test`, ao lado desta pasta de código. Relatórios anteriores documentam a fase pré-APK e continuam preservados como histórico. Remoto privado sem novos pushes.
+Leia o [relatório da entrega](docs/INSTALLERS_FINAL_REPORT.md), o [guia de instalação](docs/INSTALLATION_PHASE.md), o [roteiro de teste com dois celulares](docs/NATIVE_TRANSPORT.md) e a documentação de [diagnósticos](docs/DIAGNOSTICS.md) e [IA local](docs/LOCAL_AI.md).
+
+Os pacotes compilados e seus hashes SHA-256 estão na [entrega 0.2.0-test](entregas/0.2.0-test/README.md).
 
 ## Abrir no VS Code
 
